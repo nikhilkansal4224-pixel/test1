@@ -1,0 +1,12 @@
+{
+  "name": "aurelia-bistro-and-lounge",
+  "version": "1.0.0",
+  "description": "Fine artisanal dining website for Aurelia Bistro & Lounge",
+  "scripts": {
+    "dev": "npx serve .",
+    "start": "npx serve ."
+  },
+  "keywords": ["restaurant", "website", "fine-dining", "hospitality"],
+  "author": "",
+  "license": "MIT"
+}
