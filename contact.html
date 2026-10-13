@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AURELIA — Contact, Location & Dining Concierge</title>
+  <meta name="description" content="Find our address, service hours, parking options, private dining inquiries, and frequently asked questions at Aurelia.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Announcement Bar -->
+  <div class="top-banner">
+    Reservations now open for our Spring Harvest Tasting Experience • <span>Reserve Today</span>
+  </div>
+
+  <!-- Header / Navigation -->
+  <header class="site-header">
+    <div class="container header-container">
+      <a href="index.html" class="logo-brand">
+        <span class="brand-title">AURELIA</span>
+        <span class="brand-subtitle">BISTRO & LOUNGE</span>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="menu.html" class="nav-link">Menu</a></li>
+          <li><a href="about.html" class="nav-link">Our Story</a></li>
+          <li><a href="reservation.html" class="nav-link">Reservations</a></li>
+          <li><a href="contact.html" class="nav-link active">Contact & Hours</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <a href="tel:+14155550198" style="font-size: 0.9rem; font-weight: 600; color: var(--text-secondary); margin-right: 0.5rem;">(415) 555-0198</a>
+        <a href="reservation.html" class="btn btn-primary btn-sm">Book a Table</a>
+        <button class="mobile-toggle" aria-label="Toggle navigation menu">&#9776;</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Page Banner -->
+    <section class="page-banner">
+      <div class="container">
+        <span class="section-tag">We Welcome You</span>
+        <h1>Contact & Location</h1>
+        <p>Located in the heart of San Francisco's historic Financial District, steps away from Montgomery Station.</p>
+        <div class="breadcrumbs">
+          <a href="index.html">Home</a> &rsaquo; <span>Contact & Hours</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact & Inquiries Layout -->
+    <section class="section section-bg-surface">
+      <div class="container">
+        <div class="contact-layout">
+
+          <!-- Left: Information Cards & Hours -->
+          <div>
+            <div class="section-header" style="text-align: left; margin-bottom: 2rem;">
+              <span class="section-tag">Direct Information</span>
+              <h2 class="section-title" style="font-size: 2rem;">Get In Touch</h2>
+              <p class="section-subtitle">Our guest concierge is available daily to assist with table arrangements, allergies, or private gatherings.</p>
+            </div>
+
+            <div class="contact-card-list">
+              <!-- Card 1: Address -->
+              <div class="contact-item-card">
+                <div class="contact-icon-bubble">📍</div>
+                <div>
+                  <h3>Location & Address</h3>
+                  <p>428 Montgomery Street, Financial District<br>San Francisco, CA 94104</p>
+                  <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 0.35rem;">
+                    Cross street: California Street. Valet parking available Thursday through Saturday from 5:30 PM.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Card 2: Phone & Email -->
+              <div class="contact-item-card">
+                <div class="contact-icon-bubble">📞</div>
+                <div>
+                  <h3>Direct Contacts</h3>
+                  <p>
+                    <strong>Dining Reservations:</strong> (415) 555-0198<br>
+                    <strong>Private Events:</strong> (415) 555-0199<br>
+                    <strong>General Concierge:</strong> concierge@aureliabistro.com
+                  </p>
+                </div>
+              </div>
+
+              <!-- Card 3: Hours of Service -->
+              <div class="contact-item-card">
+                <div class="contact-icon-bubble">🕒</div>
+                <div style="width: 100%;">
+                  <h3>Dining Room Hours</h3>
+                  <ul class="footer-hours-list" style="margin-top: 0.5rem;">
+                    <li><span>Tuesday – Thursday:</span> <strong>5:00 PM – 10:00 PM</strong></li>
+                    <li><span>Friday – Saturday:</span> <strong>5:00 PM – 11:00 PM</strong></li>
+                    <li><span>Sunday Evening:</span> <strong>4:30 PM – 9:30 PM</strong></li>
+                    <li><span>Monday:</span> <strong>Private Events Only</strong></li>
+                  </ul>
+                  <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 0.4rem;">
+                    * The Cocktail Lounge opens 30 minutes prior to dinner service.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Card 4: Transit -->
+              <div class="contact-item-card">
+                <div class="contact-icon-bubble">🚇</div>
+                <div>
+                  <h3>Public Transit</h3>
+                  <p>
+                    2 blocks from Montgomery St BART / Muni Metro Station. 
+                    Cable car stop: California & Montgomery.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Interactive Inquiry Form -->
+          <div>
+            <div class="booking-form-box">
+              <span class="section-tag">Direct Inquiry</span>
+              <h2 style="font-family: var(--font-serif); font-size: 1.8rem; margin: 0.5rem 0; color: var(--text-primary);">Send Us a Message</h2>
+              <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 2rem;">For private celebrations, press inquiries, or general feedback.</p>
+
+              <form id="contactForm">
+                <div class="form-group-row">
+                  <div class="form-group">
+                    <label for="contactName">Your Name</label>
+                    <input type="text" id="contactName" placeholder="Eleanor Vance" required>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="contactEmail">Email Address</label>
+                    <input type="email" id="contactEmail" placeholder="eleanor@example.com" required>
+                  </div>
+                </div>
+
+                <div class="form-group-row">
+                  <div class="form-group">
+                    <label for="contactPhone">Phone Number</label>
+                    <input type="tel" id="contactPhone" placeholder="(415) 555-0100">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="contactSubject">Inquiry Nature</label>
+                    <select id="contactSubject">
+                      <option value="General Dining">General Dining Question</option>
+                      <option value="Private Dining">Private Dining / Banquet (9+ Guests)</option>
+                      <option value="Dietary & Allergies">Dietary / Allergy Inquiry</option>
+                      <option value="Press & Media">Press & Media</option>
+                      <option value="Careers">Careers & Apprenticeship</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="contactMessage">Your Message</label>
+                  <textarea id="contactMessage" rows="5" placeholder="Please detail your inquiry, party size, target dates, or special notes..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;">
+                  Send Inquiries
+                </button>
+              </form>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Frequently Asked Questions -->
+        <div class="faq-section">
+          <div class="section-header">
+            <span class="section-tag">Help & Clarifications</span>
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <p class="section-subtitle">Helpful answers regarding our policies, parking, and dining experience.</p>
+          </div>
+
+          <div class="faq-card">
+            <div class="faq-question">
+              <span>What is the dress code at Aurelia?</span>
+              <span class="faq-icon" style="font-size: 1.2rem; font-weight: bold;">+</span>
+            </div>
+            <div class="faq-answer" style="display: none;">
+              We encourage smart casual attire. While jackets are not required for gentlemen, collared shirts and neat trousers are recommended. We kindly ask guests to refrain from athletic sportswear, workout apparel, and beach sandals.
+            </div>
+          </div>
+
+          <div class="faq-card">
+            <div class="faq-question">
+              <span>Do you accommodate severe food allergies or vegan diets?</span>
+              <span class="faq-icon" style="font-size: 1.2rem; font-weight: bold;">+</span>
+            </div>
+            <div class="faq-answer" style="display: none;">
+              Absolutely. Our culinary team prepares each component from scratch, allowing us to adapt dishes for gluten intolerance, dairy allergies, vegetarian, and plant-based preferences. Please note dietary details during your reservation.
+            </div>
+          </div>
+
+          <div class="faq-card">
+            <div class="faq-question">
+              <span>Are children welcome at the restaurant?</span>
+              <span class="faq-icon" style="font-size: 1.2rem; font-weight: bold;">+</span>
+            </div>
+            <div class="faq-answer" style="display: none;">
+              Well-mannered children who can appreciate a fine dining environment are welcome. We offer simplified seasonal vegetable and pasta preparations upon request. High chairs are available with advance notice.
+            </div>
+          </div>
+
+          <div class="faq-card">
+            <div class="faq-question">
+              <span>What is your corkage and cake cutting policy?</span>
+              <span class="faq-icon" style="font-size: 1.2rem; font-weight: bold;">+</span>
+            </div>
+            <div class="faq-answer" style="display: none;">
+              Our corkage fee is $45 per 750ml bottle for bottles not currently featured on our wine list (limit 2 bottles per table). The fee is waived for each bottle purchased from our wine cellar. Cake plating service is $8 per guest.
+            </div>
+          </div>
+
+          <div class="faq-card">
+            <div class="faq-question">
+              <span>Where should we park?</span>
+              <span class="faq-icon" style="font-size: 1.2rem; font-weight: bold;">+</span>
+            </div>
+            <div class="faq-answer" style="display: none;">
+              Valet parking is available directly in front of the main entrance at 428 Montgomery Street starting at 5:30 PM Thursday through Saturday ($22 flat evening rate). Alternatively, the St. Mary’s Square Garage is a 3-minute stroll away.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <span class="brand-title">AURELIA</span>
+          <span class="brand-subtitle">BISTRO & LOUNGE</span>
+          <p>A tranquil fine dining destination celebrating seasonal terroir, honest organic farmers, and convivial hospitality.</p>
+          <div style="color: var(--text-muted); font-size: 0.9rem;">
+            428 Montgomery Street, Financial District<br>
+            San Francisco, CA 94104
+          </div>
+        </div>
+
+        <div class="footer-column">
+          <h4>Explore</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="menu.html">Full Menu</a></li>
+            <li><a href="about.html">Our Story & Team</a></li>
+            <li><a href="reservation.html">Table Reservations</a></li>
+            <li><a href="contact.html">Hours & Location</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h4>Service Hours</h4>
+          <ul class="footer-hours-list">
+            <li><strong>Tue – Thu</strong> 5:00 PM – 10:00 PM</li>
+            <li><strong>Fri – Sat</strong> 5:00 PM – 11:00 PM</li>
+            <li><strong>Sunday</strong> 4:30 PM – 9:30 PM</li>
+            <li><strong>Monday</strong> Closed</li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h4>Newsletter</h4>
+          <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
+            Join our private guest list for seasonal menu previews and winemaker dinner invitations.
+          </p>
+          <form class="newsletter-form" onsubmit="event.preventDefault();">
+            <input type="email" placeholder="Enter your email" required aria-label="Email address">
+            <button type="submit" class="btn btn-primary btn-sm">Join</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 Aurelia Bistro & Lounge. All rights reserved.</div>
+        <div style="display: flex; gap: 1.5rem;">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Accessibility</a>
+          <a href="#">Dietary Standards</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

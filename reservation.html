@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AURELIA — Book a Table & Dining Reservations</title>
+  <meta name="description" content="Reserve your table online at Aurelia Bistro & Lounge. Choose seating preferences, select tasting menus, and confirm instantly.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Announcement Bar -->
+  <div class="top-banner">
+    Reservations now open for our Spring Harvest Tasting Experience • <span>Reserve Today</span>
+  </div>
+
+  <!-- Header / Navigation -->
+  <header class="site-header">
+    <div class="container header-container">
+      <a href="index.html" class="logo-brand">
+        <span class="brand-title">AURELIA</span>
+        <span class="brand-subtitle">BISTRO & LOUNGE</span>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="menu.html" class="nav-link">Menu</a></li>
+          <li><a href="about.html" class="nav-link">Our Story</a></li>
+          <li><a href="reservation.html" class="nav-link active">Reservations</a></li>
+          <li><a href="contact.html" class="nav-link">Contact & Hours</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <a href="tel:+14155550198" style="font-size: 0.9rem; font-weight: 600; color: var(--text-secondary); margin-right: 0.5rem;">(415) 555-0198</a>
+        <a href="reservation.html" class="btn btn-primary btn-sm">Book a Table</a>
+        <button class="mobile-toggle" aria-label="Toggle navigation menu">&#9776;</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Page Banner -->
+    <section class="page-banner">
+      <div class="container">
+        <span class="section-tag">Instant Confirmation</span>
+        <h1>Reserve Your Experience</h1>
+        <p>Join us for an evening of quiet luxury, vibrant seasonal flavors, and heartfelt hospitality.</p>
+        <div class="breadcrumbs">
+          <a href="index.html">Home</a> &rsaquo; <span>Reservations</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reservation Engine -->
+    <section class="section section-bg-surface">
+      <div class="container">
+        <div class="reservation-layout">
+
+          <!-- Left: Booking Form -->
+          <div class="booking-form-box">
+            <h2 style="font-family: var(--font-serif); font-size: 1.8rem; margin-bottom: 0.5rem; color: var(--text-primary);">Table Details</h2>
+            <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 2rem;">Please fill out the form below. Your reservation is guaranteed instantly upon submission.</p>
+
+            <form id="reservationForm">
+              <!-- Guests & Date -->
+              <div class="form-group-row">
+                <div class="form-group">
+                  <label for="resGuests">Number of Guests</label>
+                  <select id="resGuests" required>
+                    <option value="1 Guest">1 Guest (Solo Dining)</option>
+                    <option value="2 Guests" selected>2 Guests (Table for Two)</option>
+                    <option value="3 Guests">3 Guests</option>
+                    <option value="4 Guests">4 Guests</option>
+                    <option value="5 Guests">5 Guests</option>
+                    <option value="6 Guests">6 Guests</option>
+                    <option value="7 Guests">7 Guests</option>
+                    <option value="8 Guests">8 Guests (Large Party)</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="resDate">Reservation Date</label>
+                  <input type="date" id="resDate" required>
+                </div>
+              </div>
+
+              <!-- Time & Meal Experience -->
+              <div class="form-group-row">
+                <div class="form-group">
+                  <label for="resTime">Preferred Time</label>
+                  <select id="resTime" required>
+                    <option value="5:00 PM">5:00 PM — Early Evening</option>
+                    <option value="5:30 PM">5:30 PM</option>
+                    <option value="6:00 PM">6:00 PM</option>
+                    <option value="6:30 PM">6:30 PM</option>
+                    <option value="7:00 PM" selected>7:00 PM — Prime Dinner</option>
+                    <option value="7:30 PM">7:30 PM</option>
+                    <option value="8:00 PM">8:00 PM</option>
+                    <option value="8:30 PM">8:30 PM</option>
+                    <option value="9:00 PM">9:00 PM — Late Service</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="resExperience">Dining Experience</label>
+                  <select id="resExperience">
+                    <option value="A La Carte">À La Carte Seasonal Dining</option>
+                    <option value="7-Course Tasting">7-Course Chef's Tasting Menu ($145)</option>
+                    <option value="Tasting & Wine">Tasting Menu + Wine Pairing ($230)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Seating Preference Options -->
+              <div class="form-group">
+                <label>Seating Preference</label>
+                <div class="seating-options">
+                  <div>
+                    <input type="radio" id="seatIndoor" name="seating" value="Main Dining Room" class="seating-radio" checked>
+                    <label for="seatIndoor" class="seating-label">
+                      <span class="icon">🏛️</span>
+                      <span class="name">Main Dining</span>
+                    </label>
+                  </div>
+
+                  <div>
+                    <input type="radio" id="seatBar" name="seating" value="Chef's Open Counter" class="seating-radio">
+                    <label for="seatBar" class="seating-label">
+                      <span class="icon">🍳</span>
+                      <span class="name">Chef's Counter</span>
+                    </label>
+                  </div>
+
+                  <div>
+                    <input type="radio" id="seatTerrace" name="seating" value="Garden Terrace (Heated)" class="seating-radio">
+                    <label for="seatTerrace" class="seating-label">
+                      <span class="icon">🌿</span>
+                      <span class="name">Garden Terrace</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Contact Info -->
+              <div class="form-group-row">
+                <div class="form-group">
+                  <label for="resName">Full Name</label>
+                  <input type="text" id="resName" placeholder="e.g. Charlotte Hayes" required>
+                </div>
+
+                <div class="form-group">
+                  <label for="resPhone">Phone Number</label>
+                  <input type="tel" id="resPhone" placeholder="(415) 555-0123" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="resEmail">Email Address (for confirmation receipt)</label>
+                <input type="email" id="resEmail" placeholder="charlotte@example.com" required>
+              </div>
+
+              <!-- Special Notes -->
+              <div class="form-group">
+                <label for="resNotes">Dietary Restrictions or Special Celebration</label>
+                <textarea id="resNotes" rows="3" placeholder="Please let us know of any severe allergies, anniversary or birthday celebrations, or accessibility accommodations..."></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-lg" style="width: 100%; margin-top: 1rem;">
+                Confirm Table Reservation
+              </button>
+            </form>
+          </div>
+
+          <!-- Right: Policies & Assistance -->
+          <div class="booking-sidebar-info">
+            <div class="sidebar-info-card">
+              <h3>Reservation Guidelines</h3>
+              <ul>
+                <li><span>•</span> We hold tables for 15 minutes past reservation time before offering to waiting walk-in guests.</li>
+                <li><span>•</span> Complimentary cancellations accepted up to 12 hours prior to scheduled dining.</li>
+                <li><span>•</span> Smart casual attire is appreciated. We kindly request no athletic sportswear or beach flip-flops.</li>
+                <li><span>•</span> Corkage policy: $45 per 750ml bottle (maximum 2 bottles per party), waived for each bottle purchased from our list.</li>
+              </ul>
+            </div>
+
+            <div class="sidebar-info-card">
+              <h3>Parties of 9 or More</h3>
+              <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.25rem;">
+                For private banquets, corporate dinners, or milestone gatherings exceeding 8 guests, please reach out to our Private Events Director directly.
+              </p>
+              <a href="contact.html" class="btn btn-secondary btn-sm" style="width: 100%;">Inquire for Private Events</a>
+            </div>
+
+            <div class="sidebar-info-card" style="background-color: var(--brand-light); border-color: #ECD8CE;">
+              <h3 style="color: var(--brand-primary); border-color: #E2C2B2;">Direct Inquiries</h3>
+              <p style="font-size: 0.92rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
+                Need to modify an existing reservation or have special inquiries?
+              </p>
+              <div style="font-weight: 700; font-size: 1.1rem; color: var(--brand-primary);">
+                (415) 555-0198
+              </div>
+              <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">
+                concierge@aureliabistro.com
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Booking Confirmation Modal -->
+  <div class="modal-overlay" id="bookingModal" role="dialog" aria-modal="true" aria-labelledby="modalHeading">
+    <div class="modal-box">
+      <div class="modal-icon-success">✓</div>
+      <h2 id="modalHeading">Table Confirmed!</h2>
+      <p style="color: var(--text-secondary); font-size: 0.95rem;">
+        Your reservation has been recorded in our dining system. A confirmation receipt has been sent to your email.
+      </p>
+
+      <div class="modal-summary-box">
+        <div class="modal-summary-row">
+          <span>Booking Reference:</span>
+          <span id="modalRef" style="color: var(--brand-primary); font-family: monospace; font-size: 1.05rem;">AB-882910</span>
+        </div>
+        <div class="modal-summary-row">
+          <span>Guest Name:</span>
+          <span id="modalName">Charlotte Hayes</span>
+        </div>
+        <div class="modal-summary-row">
+          <span>Party & Time:</span>
+          <span id="modalDetails">2 Guests • Today at 7:00 PM</span>
+        </div>
+        <div class="modal-summary-row">
+          <span>Seating Area:</span>
+          <span id="modalSeating">Main Dining</span>
+        </div>
+        <div class="modal-summary-row">
+          <span>Contact Info:</span>
+          <span id="modalContact">(415) 555-0123</span>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-primary" id="closeModalBtn" style="width: 100%;">
+        Done & Return
+      </button>
+    </div>
+  </div>
+
+  <!-- Global Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <span class="brand-title">AURELIA</span>
+          <span class="brand-subtitle">BISTRO & LOUNGE</span>
+          <p>A tranquil fine dining destination celebrating seasonal terroir, honest organic farmers, and convivial hospitality.</p>
+          <div style="color: var(--text-muted); font-size: 0.9rem;">
+            428 Montgomery Street, Financial District<br>
+            San Francisco, CA 94104
+          </div>
+        </div>
+
+        <div class="footer-column">
+          <h4>Explore</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="menu.html">Full Menu</a></li>
+            <li><a href="about.html">Our Story & Team</a></li>
+            <li><a href="reservation.html">Table Reservations</a></li>
+            <li><a href="contact.html">Hours & Location</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h4>Service Hours</h4>
+          <ul class="footer-hours-list">
+            <li><strong>Tue – Thu</strong> 5:00 PM – 10:00 PM</li>
+            <li><strong>Fri – Sat</strong> 5:00 PM – 11:00 PM</li>
+            <li><strong>Sunday</strong> 4:30 PM – 9:30 PM</li>
+            <li><strong>Monday</strong> Closed</li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h4>Newsletter</h4>
+          <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
+            Join our private guest list for seasonal menu previews and winemaker dinner invitations.
+          </p>
+          <form class="newsletter-form" onsubmit="event.preventDefault();">
+            <input type="email" placeholder="Enter your email" required aria-label="Email address">
+            <button type="submit" class="btn btn-primary btn-sm">Join</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 Aurelia Bistro & Lounge. All rights reserved.</div>
+        <div style="display: flex; gap: 1.5rem;">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Accessibility</a>
+          <a href="#">Dietary Standards</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

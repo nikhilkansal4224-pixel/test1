@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AURELIA — Seasonal Menu & Tasting Experience</title>
+  <meta name="description" content="Explore our seasonal menu featuring artisanal starters, house-made pastas, coastal mains, desserts, and biodynamic wines.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Announcement Bar -->
+  <div class="top-banner">
+    Reservations now open for our Spring Harvest Tasting Experience • <span>Reserve Today</span>
+  </div>
+
+  <!-- Header / Navigation -->
+  <header class="site-header">
+    <div class="container header-container">
+      <a href="index.html" class="logo-brand">
+        <span class="brand-title">AURELIA</span>
+        <span class="brand-subtitle">BISTRO & LOUNGE</span>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="menu.html" class="nav-link active">Menu</a></li>
+          <li><a href="about.html" class="nav-link">Our Story</a></li>
+          <li><a href="reservation.html" class="nav-link">Reservations</a></li>
+          <li><a href="contact.html" class="nav-link">Contact & Hours</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <a href="tel:+14155550198" style="font-size: 0.9rem; font-weight: 600; color: var(--text-secondary); margin-right: 0.5rem;">(415) 555-0198</a>
+        <a href="reservation.html" class="btn btn-primary btn-sm">Book a Table</a>
+        <button class="mobile-toggle" aria-label="Toggle navigation menu">&#9776;</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Page Banner -->
+    <section class="page-banner">
+      <div class="container">
+        <span class="section-tag">A Culinary Journey</span>
+        <h1>The Seasonal Menu</h1>
+        <p>Curated dishes reflecting Northern California's finest organic farms, coastal fishermen, and regional culinary traditions.</p>
+        <div class="breadcrumbs">
+          <a href="index.html">Home</a> &rsaquo; <span>Menu</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Menu Content Section -->
+    <section class="section section-bg-surface">
+      <div class="container">
+
+        <!-- Controls: Search & Category Tabs -->
+        <div class="menu-controls">
+          <div class="menu-search-bar">
+            <input type="text" id="menuSearch" placeholder="Search dish, ingredients, or pairings..." aria-label="Search menu">
+          </div>
+
+          <div class="category-tabs">
+            <button class="category-btn active" data-filter="all">All Selections</button>
+            <button class="category-btn" data-filter="starters">Starters & Raw Bar</button>
+            <button class="category-btn" data-filter="mains">Main Courses</button>
+            <button class="category-btn" data-filter="desserts">Desserts</button>
+            <button class="category-btn" data-filter="drinks">Artisanal Cocktails & Wine</button>
+          </div>
+
+          <div class="filter-tags">
+            <span style="font-size: 0.8rem; color: var(--text-muted); align-self: center; margin-right: 0.25rem;">Filter by:</span>
+            <button class="filter-tag-btn active" data-tag="all">All Diets</button>
+            <button class="filter-tag-btn" data-tag="vegetarian">Vegetarian</button>
+            <button class="filter-tag-btn" data-tag="gluten-free">Gluten-Free</button>
+            <button class="filter-tag-btn" data-tag="chef-choice">Chef's Signature</button>
+          </div>
+        </div>
+
+        <!-- Dish Grid List -->
+        <div class="menu-items-grid" id="menuGrid">
+
+          <!-- STARTER 1 -->
+          <article class="menu-dish-card" data-category="starters" data-tags="vegetarian">
+            <img src="https://images.unsplash.com/photo-1592417817098-8f3d6eb22513?auto=format&fit=crop&w=300&q=80" alt="Heirloom Burrata" class="dish-thumbnail">
+            <div class="dish-details">
+              <div class="dish-header">
+                <h3 class="dish-name">Heirloom Burrata & Honeyed Figs</h3>
+                <span class="dish-price">$24</span>
+              </div>
+              <p class="dish-desc">Artisanal burrata cheese, Mission figs, wildflower honey, toasted Sicilian pistachios, fresh basil on grilled house sourdough.</p>
+              <div class="dish-footer">
+                <div class="dietary-badges">
+                  <span class="diet-pill v">Vegetarian</span>
+                </div>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">Starter</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- STARTER 2 -->
+          <article class="menu-dish-card" data-category="starters" data-tags="gluten-free chef-choice">
+            <img src="https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=300&q=80" alt="Hamachi Crudo" class="dish-thumbnail">
+            <div class="dish-details">
+              <div class="dish-header">
+                <h3 class="dish-name">Pacific Hamachi Crudo</h3>
+                <span class="dish-price">$26</span>
+              </div>
+              <p class="dish-desc">Thinly sliced yellowtail, white ponzu, compressed melon, serrano chili, sea grapes, and cold-pressed yuzu oil.</p>
+              <div class="dish-footer">
+                <div class="dietary-badges">
+                  <span class="diet-pill gf">Gluten-Free</span>
+                  <span class="diet-pill chef">Chef's Pick</span>
+                </div>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">Starter</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- STARTER 3 -->
+          <article class="menu-dish-card" data-category="starters" data-tags="vegetarian gluten-free">
+            <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=300&q=80" alt="Charred Brassica Bowl" class="dish-thumbnail">
+            <div class="dish-details">
+              <div class="dish-header">
+                <h3 class="dish-name">Charred Brassica & Whipped Ricotta</h3>
+                <span class="dish-price">$21</span>
+              </div>
+              <p class="dish-desc">Cast-iron broccolini, sheep’s milk ricotta, lemon zest vinaigrette, crispy capers, fermented garlic emulsion.</p>
+              <div class="dish-footer">
+                <div class="dietary-badges">
+                  <span class="diet-pill v">Vegetarian</span>
+                  <span class="diet-pill gf">Gluten-Free</span>
+                </div>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">Starter</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- STARTER 4 -->
+          <article class="menu-dish-card" data-category="starters" data-tags="gluten-free">
+            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=300&q=80" alt="Wagyu Beef Carpaccio" class="dish-thumbnail">
+            <div class="dish-details">
+              <div class="dish-header">
+                <h3 class="dish-name">A5 Miyazaki Wagyu Carpaccio</h3>
+                <span class="dish-price">$29</span>
+              </div>
+              <p class="dish-desc">Paper-thin Japanese Wagyu, black garlic aioli, cured egg yolk shavings, micro arugula, pickled chanterelles.</p>
+              <div class="dish-footer">
+                <div class="dietary-badges">
+                  <span class="diet-pill gf">Gluten-Free</span>
+                </div>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">Starter</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- MAIN 1 -->
+          <article class="menu-dish-card" data-category="mains" data-tags="vegetarian chef-choice">
+            <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=300&q=80" alt="Truffle Tagliatelle" class="dish-thumbnail">
+            <div class="dish-details">
+              <div class="dish-header">
+                <h3 class="dish-name">Hand-Rolled Truffle Tagliatelle</h3>
+                <span class="dish-price">$38</span>
+              </div>
+              <p class="dish-desc">Egg yolk pasta, 36-month aged Parmigiano Reggiano, French cultured butter emulsion, shaved Norcia black truffles.</p>
+              <div class="dish-footer">
+                <div class="dietary-badges">
+                  <span class="diet-pill v">Vegetarian</span>
+                  <span class="diet-pill chef">Signature</span>
+                </div>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">Pasta</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- MAIN 2 -->
+          <article class="menu-dish-card" data-category="mains" data-tags="gluten-free chef-choice">
+            <img src="https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=300&q=80" alt="King Salmon" class="dish-thumbnail">
+            <div class="dish-details">
+              <div class="dish-header">
+                <h3 class="dish-name">Wild King Salmon & Cauliflower Silk</h3>
+                <span class="dish-price">$42</span>
+              </div>
+              <p class="dish-desc">Pan-crisped skin, smooth caramelized cauliflower purée, tender poached leeks, Meyer lemon beurre blanc, dill nectar.</p>
+              <div class="dish-footer">
+                <div class="dietary-badges">
+                  <span class="diet-pill gf">Gluten-Free</span>
+                  <span class="diet-pill chef">Wild-Caught</span>
+                </div>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">Main</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- MAIN 3 -->
+          <article class="menu-dish-card" data-category="mains" data-tags="gluten-free">
+            <img src="https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=300&q=80" alt="Dry-Aged Ribeye" class="dish-thumbnail">
+            <div class="dish-details">
+              <div class="dish-header">
+                <h3 class="dish-name">45-Day Dry-Aged Ribeye</h3>
+                <span class="dish-price">$58</span>
+              </div>
+              <p class="dish-desc">Certified Angus beef, roasted bone marrow crust, truffled potato purée, glazed cipollini onions, green peppercorn jus.</p>
+              <div class="dish-footer">
+                <div class="dietary-badges">
+                  <span class="diet-pill gf">Gluten-Free</span>
+                </div>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">Main</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- MAIN 4 -->
+          <article class="menu-dish-card" data-category="mains" data-tags="vegetarian gluten-free">
+            <img src="https://images.unsplash.com/photo-1633964913295-ceb43826e7c9?auto=format&fit=crop&w=300&q=80" alt="Chanterelle Risotto" class="dish-thumbnail">
+            <div class="dish-details">
+              <div class="dish-header">
+                <h3 class="dish-name">Wild Chanterelle & Acquerello Risotto</h3>
+                <span class="dish-price">$34</span>
+              </div>
+              <p class="dish-desc">Aged Carnaroli rice, sautéed mountain chanterelles, taleggio fondue, thyme oil, crispy shallot rings.</p>
+              <div class="dish-footer">
+                <div class="dietary-badges">
+                  <span class="diet-pill v">Vegetarian</span>
+                  <span class="diet-pill gf">Gluten-Free</span>
+                </div>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">Main</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- DESSERT 1 -->
+          <article class="menu-dish-card" data-category="desserts" data-tags="vegetarian chef-choice">
+            <img src="https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=300&q=80" alt="Dark Chocolate Ganache" class="dish-thumbnail">
+            <div class="dish-details">
+              <div class="dish-header">
+                <h3 class="dish-name">Single-Origin Dark Chocolate Ganache</h3>
+                <span class="dish-price">$18</span>
+              </div>
+              <p class="dish-desc">72% Araguani chocolate tart, smoked sea salt flakes, olive oil gelato, cocoa nib tuile.</p>
+              <div class="dish-footer">
+                <div class="dietary-badges">
+                  <span class="diet-pill v">Vegetarian</span>
+                  <span class="diet-pill chef">Dessert</span>
+                </div>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">Dessert</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- DESSERT 2 -->
+          <article class="menu-dish-card" data-category="desserts" data-tags="vegetarian gluten-free">
+            <img src="https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?auto=format&fit=crop&w=300&q=80" alt="Meyer Lemon Tart" class="dish-thumbnail">
+            <div class="dish-details">
+              <div class="dish-header">
+                <h3 class="dish-name">Meyer Lemon & Basil Vacherin</h3>
+                <span class="dish-price">$16</span>
+              </div>
+              <p class="dish-desc">Crisp French meringue shells, lemon curd core, candied bergamot peel, basil sorbet, strawberry coulis.</p>
+              <div class="dish-footer">
+                <div class="dietary-badges">
+                  <span class="diet-pill v">Vegetarian</span>
+                  <span class="diet-pill gf">Gluten-Free</span>
+                </div>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">Dessert</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- DRINK 1 -->
+          <article class="menu-dish-card" data-category="drinks" data-tags="chef-choice">
+            <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=300&q=80" alt="Botanical Cocktail" class="dish-thumbnail">
+            <div class="dish-details">
+              <div class="dish-header">
+                <h3 class="dish-name">The Aurelia Botanist</h3>
+                <span class="dish-price">$19</span>
+              </div>
+              <p class="dish-desc">St. George Terroir Gin, elderflower liqueur, clarified cucumber cordial, lemon verbena mist, champagne foam.</p>
+              <div class="dish-footer">
+                <div class="dietary-badges">
+                  <span class="diet-pill chef">Signature Drink</span>
+                </div>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">Cocktail</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- DRINK 2 -->
+          <article class="menu-dish-card" data-category="drinks" data-tags="">
+            <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=300&q=80" alt="Biodynamic Wine" class="dish-thumbnail">
+            <div class="dish-details">
+              <div class="dish-header">
+                <h3 class="dish-name">Domaine de la Romanée Reserve (2018)</h3>
+                <span class="dish-price">$28 / Glass</span>
+              </div>
+              <p class="dish-desc">Organic Pinot Noir, Burgundy France. Vibrant wild cherries, damp forest floor, refined tannins, velvety finish.</p>
+              <div class="dish-footer">
+                <div class="dietary-badges">
+                  <span class="diet-pill gf">Organic Cellar</span>
+                </div>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">Wine</span>
+              </div>
+            </div>
+          </article>
+
+        </div>
+
+        <!-- Chef Tasting Banner -->
+        <div class="tasting-menu-card">
+          <div class="tasting-info">
+            <span class="section-tag" style="background-color: #DEE7DE;">The Omnivore's Experience</span>
+            <h3>7-Course Spring Harvest Tasting Menu</h3>
+            <p>
+              An immersive multi-course progression presenting the season's rarest produce, prime sustainable seafood, and hand-selected poultry. Curated directly by Chef Julian Morales.
+            </p>
+            <div style="margin-top: 1rem; font-size: 0.88rem; color: var(--text-secondary);">
+              * Optional Sommelier Grand Reserve wine pairing available for $85.
+            </div>
+          </div>
+          <div class="tasting-cta">
+            <span class="price-tag">$145 <small style="font-size: 1rem; font-weight: normal; color: var(--text-secondary);">/ person</small></span>
+            <a href="reservation.html" class="btn btn-dark">Reserve Tasting Experience</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <span class="brand-title">AURELIA</span>
+          <span class="brand-subtitle">BISTRO & LOUNGE</span>
+          <p>A tranquil fine dining destination celebrating seasonal terroir, honest organic farmers, and convivial hospitality.</p>
+          <div style="color: var(--text-muted); font-size: 0.9rem;">
+            428 Montgomery Street, Financial District<br>
+            San Francisco, CA 94104
+          </div>
+        </div>
+
+        <div class="footer-column">
+          <h4>Explore</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="menu.html">Full Menu</a></li>
+            <li><a href="about.html">Our Story & Team</a></li>
+            <li><a href="reservation.html">Table Reservations</a></li>
+            <li><a href="contact.html">Hours & Location</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h4>Service Hours</h4>
+          <ul class="footer-hours-list">
+            <li><strong>Tue – Thu</strong> 5:00 PM – 10:00 PM</li>
+            <li><strong>Fri – Sat</strong> 5:00 PM – 11:00 PM</li>
+            <li><strong>Sunday</strong> 4:30 PM – 9:30 PM</li>
+            <li><strong>Monday</strong> Closed</li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h4>Newsletter</h4>
+          <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
+            Join our private guest list for seasonal menu previews and winemaker dinner invitations.
+          </p>
+          <form class="newsletter-form" onsubmit="event.preventDefault();">
+            <input type="email" placeholder="Enter your email" required aria-label="Email address">
+            <button type="submit" class="btn btn-primary btn-sm">Join</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 Aurelia Bistro & Lounge. All rights reserved.</div>
+        <div style="display: flex; gap: 1.5rem;">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Accessibility</a>
+          <a href="#">Dietary Standards</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
