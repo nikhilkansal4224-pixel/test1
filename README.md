@@ -1,5 +1,7 @@
 # Aurelia — Artisanal Bistro & Lounge
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fnikhilkansal4224-pixel%2Ftest1)
+
 A fine dining website designed with modern aesthetics, responsive layouts, table reservation system, interactive food & wine menu, and contact concierges.
 
 ---
