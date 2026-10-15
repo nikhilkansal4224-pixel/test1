@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Fine artisanal dining website for Aurelia Bistro & Lounge",
   "scripts": {
-    "build": "echo 'Static site ready for deployment'",
     "dev": "node server.js",
     "start": "node server.js"
   },
