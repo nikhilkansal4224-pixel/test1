@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guest Account & Dining Sign In — AURELIA Bistro & Lounge</title>
+  <meta name="description" content="Sign in to your Aurelia Bistro & Lounge account. Access your reservations, tasting menu preferences, and member privileges.">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .auth-page-wrapper {
+      min-height: calc(100vh - 120px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 1.25rem 5rem 1.25rem;
+      background: radial-gradient(circle at top right, #F3EFEA 0%, #FAF8F5 100%);
+    }
+
+    .auth-page-card {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      max-width: 960px;
+      width: 100%;
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+    }
+
+    .auth-page-sidebar {
+      background-color: var(--brand-secondary);
+      color: var(--text-inverted);
+      padding: 3.5rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    .auth-page-sidebar::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.16;
+      pointer-events: none;
+    }
+
+    .auth-sidebar-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .auth-sidebar-badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--accent-gold);
+      margin-bottom: 1.5rem;
+    }
+
+    .auth-sidebar-title {
+      font-family: var(--font-serif);
+      font-size: 2.1rem;
+      line-height: 1.25;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--text-inverted);
+    }
+
+    .auth-sidebar-desc {
+      font-size: 0.95rem;
+      color: #E2E8E2;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    .auth-sidebar-perks {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .auth-sidebar-perks li {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.9rem;
+      color: #F0F4F0;
+    }
+
+    .auth-sidebar-perks li span.icon {
+      color: var(--accent-gold);
+      font-weight: bold;
+    }
+
+    .auth-sidebar-footer {
+      position: relative;
+      z-index: 2;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.65);
+    }
+
+    .auth-page-main {
+      padding: 3.5rem 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    @media (max-width: 820px) {
+      .auth-page-card {
+        grid-template-columns: 1fr;
+      }
+      .auth-page-sidebar {
+        display: none;
+      }
+      .auth-page-main {
+        padding: 2.5rem 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Announcement Bar -->
+  <div class="top-banner">
+    Reservations now open for our Spring Harvest Tasting Experience • <a href="reservation.html" style="color: inherit; text-decoration: underline;">Reserve Today</a>
+  </div>
+
+  <!-- Header / Navigation -->
+  <header class="site-header">
+    <div class="container header-container">
+      <a href="index.html" class="logo-brand">
+        <span class="brand-title">AURELIA</span>
+        <span class="brand-subtitle">BISTRO & LOUNGE</span>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="menu.html" class="nav-link">Menu</a></li>
+          <li><a href="about.html" class="nav-link">Our Story</a></li>
+          <li><a href="reservation.html" class="nav-link">Reservations</a></li>
+          <li><a href="contact.html" class="nav-link">Contact & Hours</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <a href="tel:+14155550198" style="font-size: 0.9rem; font-weight: 600; color: var(--text-secondary); margin-right: 0.5rem;">(415) 555-0198</a>
+        <a href="reservation.html" class="btn btn-primary btn-sm">Book a Table</a>
+        <button class="mobile-toggle" aria-label="Toggle navigation menu">&#9776;</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="auth-page-wrapper">
+    <div class="auth-page-card">
+      
+      <!-- Editorial Left Column -->
+      <aside class="auth-page-sidebar">
+        <div class="auth-sidebar-content">
+          <span class="auth-sidebar-badge">Guest Membership</span>
+          <h1 class="auth-sidebar-title">An exceptional dining journey awaits.</h1>
+          <p class="auth-sidebar-desc">
+            Sign in to manage your dining reservations, view your sommelier notes, and receive private invitations to our seasonal harvest tastings.
+          </p>
+
+          <ul class="auth-sidebar-perks">
+            <li><span class="icon">✓</span> Passwordless one-click email sign-in</li>
+            <li><span class="icon">✓</span> Instant reservation tracking & history</li>
+            <li><span class="icon">✓</span> Priority table placement & seating notes</li>
+            <li><span class="icon">✓</span> Private invitation to winemaker evenings</li>
+          </ul>
+        </div>
+
+        <div class="auth-sidebar-footer">
+          Aurelia Bistro & Lounge • 450 Montgomery St, Financial District, SF
+        </div>
+      </aside>
+
+      <!-- Main Interactive Auth Box -->
+      <section class="auth-page-main">
+        <div class="auth-modal-header" style="text-align: left; margin-bottom: 1.25rem;">
+          <div class="auth-modal-brand-badge">SUPABASE SECURE AUTHENTICATION</div>
+          <h2 id="pageAuthTitle" class="auth-modal-title">Welcome to Aurelia</h2>
+          <p id="pageAuthSubtitle" class="auth-modal-subtitle">Sign in with a one-click magic link, 6-digit email code, or password.</p>
+        </div>
+
+        <!-- Segmented Tab Nav -->
+        <div class="auth-tabs-nav">
+          <button type="button" class="auth-tab-btn active" id="pageTabMagicLinkBtn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            <span>Email Magic Link / OTP</span>
+          </button>
+          <button type="button" class="auth-tab-btn" id="pageTabPasswordBtn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            <span>Password Sign In</span>
+          </button>
+        </div>
+
+        <!-- Alert Notice -->
+        <div id="pageAuthAlert" class="auth-alert" style="display: none;"></div>
+
+        <!-- Tab 1: Magic Link / Email OTP -->
+        <div id="pageTabMagicLinkContent">
+          <!-- Form 1: Request Email -->
+          <form id="pageMagicLinkForm" class="auth-form-view">
+            <div class="form-group">
+              <label for="pageMagicEmail">Your Email Address</label>
+              <input 
+                type="email" 
+                id="pageMagicEmail" 
+                class="auth-input" 
+                placeholder="name@example.com" 
+                required 
+                autocomplete="email"
+              >
+              <span class="auth-input-hint">We'll instantly send a secure Supabase login link and a 6-digit confirmation code.</span>
+            </div>
+
+            <button type="submit" id="pageMagicSubmitBtn" class="btn btn-primary btn-block">
+              <span>Send Login Email / Code</span>
+            </button>
+          </form>
+
+          <!-- Form 2: Verification View -->
+          <div id="pageOtpVerifySection" class="auth-verify-view" style="display: none;">
+            <div class="auth-email-sent-card">
+              <div class="auth-email-sent-icon">✉</div>
+              <h4>Check Your Email!</h4>
+              <p>We've sent a magic login link and a 6-digit code to:</p>
+              <div class="auth-email-highlight" id="pageOtpDisplay">user@example.com</div>
+            </div>
+
+            <div class="auth-verify-divider">
+              <span>Option A: Click the link in your email</span>
+            </div>
+            <p class="auth-sub-instruction">Click the magic link in your email to authenticate immediately.</p>
+
+            <div class="auth-verify-divider">
+              <span>Option B: Or enter the 6-digit code</span>
+            </div>
+
+            <form id="pageOtpVerifyForm">
+              <div class="form-group">
+                <label for="pageOtpCode">6-Digit Verification Code</label>
+                <input 
+                  type="text" 
+                  id="pageOtpCode" 
+                  class="auth-input otp-code-input" 
+                  placeholder="123456" 
+                  maxlength="6" 
+                  pattern="[0-9]{6}"
+                  inputmode="numeric"
+                  required
+                >
+              </div>
+              <button type="submit" id="pageOtpSubmitBtn" class="btn btn-primary btn-block">
+                <span>Verify Code & Sign In</span>
+              </button>
+            </form>
+
+            <div class="auth-switch-links">
+              <button type="button" class="auth-text-link" id="pageOtpResendBtn">Resend Email</button>
+              <span class="dot-separator">•</span>
+              <button type="button" class="auth-text-link" id="pageOtpChangeEmailBtn">Use different email</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Password Sign In / Sign Up -->
+        <div id="pageTabPasswordContent" style="display: none;">
+          <div class="auth-subtoggle">
+            <button type="button" class="subtoggle-btn active" id="pageSubtoggleSignIn">Sign In</button>
+            <button type="button" class="subtoggle-btn" id="pageSubtoggleSignUp">Create Account</button>
+          </div>
+
+          <form id="pagePasswordForm" class="auth-form-view">
+            <div class="form-group" id="pageFullNameGroup" style="display: none;">
+              <label for="pageFullNameInput">Full Name</label>
+              <input 
+                type="text" 
+                id="pageFullNameInput" 
+                class="auth-input" 
+                placeholder="Eleanor Vance" 
+                autocomplete="name"
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="pagePasswordEmail">Email Address</label>
+              <input 
+                type="email" 
+                id="pagePasswordEmail" 
+                class="auth-input" 
+                placeholder="name@example.com" 
+                required 
+                autocomplete="email"
+              >
+            </div>
+
+            <div class="form-group">
+              <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                <label for="pagePasswordInput">Password</label>
+                <button type="button" class="auth-text-link" id="pageForgotPasswordBtn" style="font-size: 0.8rem;">Forgot password?</button>
+              </div>
+              <input 
+                type="password" 
+                id="pagePasswordInput" 
+                class="auth-input" 
+                placeholder="••••••••" 
+                required 
+                minlength="6"
+                autocomplete="current-password"
+              >
+            </div>
+
+            <button type="submit" id="pagePasswordSubmitBtn" class="btn btn-primary btn-block">
+              <span>Sign In</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Already Signed In Card (shown if user is currently signed in) -->
+        <div id="pageAlreadySignedInCard" style="display: none; text-align: center; padding: 1.5rem 0;">
+          <div class="auth-icon-badge" style="font-size: 2.5rem; margin-bottom: 0.75rem;">🥂</div>
+          <h3 style="font-family: var(--font-serif); margin-bottom: 0.5rem;">You Are Signed In</h3>
+          <p style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 1.5rem;">
+            Currently logged in as <strong id="pageSignedInEmail">user@example.com</strong>
+          </p>
+          <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
+            <a href="reservation.html" class="btn btn-primary btn-sm">Make a Reservation</a>
+            <button type="button" class="btn btn-secondary btn-sm" id="pageViewReservationsBtn">View My Bookings</button>
+            <button type="button" class="btn btn-outline btn-sm" id="pageSignOutBtn">Sign Out</button>
+          </div>
+        </div>
+
+        <div class="auth-modal-footer" style="text-align: left; margin-top: 2rem;">
+          <p>
+            Protected by Supabase Authentication. Secure TLS/HTTPS connection. Your personal dining details are never shared with third parties.
+          </p>
+        </div>
+
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-column">
+        <div class="logo-brand" style="margin-bottom: 1rem;">
+          <span class="brand-title">AURELIA</span>
+          <span class="brand-subtitle">BISTRO & LOUNGE</span>
+        </div>
+        <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
+          Modern seasonal cuisine honoring local farmers, coastal fisheries, and artisanal vineyards.
+        </p>
+      </div>
+
+      <div class="footer-column">
+        <h4>Navigation</h4>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="menu.html">Seasonal Menu</a></li>
+          <li><a href="about.html">Our Story & Team</a></li>
+          <li><a href="reservation.html">Table Reservations</a></li>
+          <li><a href="contact.html">Hours & Location</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Hours of Service</h4>
+        <ul class="footer-hours-list">
+          <li><strong>Tue – Thu</strong> 5:00 PM – 10:00 PM</li>
+          <li><strong>Fri – Sat</strong> 5:00 PM – 11:00 PM</li>
+          <li><strong>Sunday</strong> 4:30 PM – 9:30 PM</li>
+          <li><strong>Monday</strong> Closed</li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Contact</h4>
+        <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
+          450 Montgomery St, San Francisco, CA
+        </p>
+        <p style="font-size: 0.9rem; color: var(--text-secondary);">
+          Direct: (415) 555-0198
+        </p>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="footer-bottom">
+        <div>&copy; 2026 Aurelia Bistro & Lounge. All rights reserved.</div>
+        <div style="display: flex; gap: 1.5rem;">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Accessibility</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/main.js"></script>
+  
+  <script>
+    // Standalone page logic for auth.html
+    document.addEventListener('DOMContentLoaded', () => {
+      const alertEl = document.getElementById('pageAuthAlert');
+      const tabMagicBtn = document.getElementById('pageTabMagicLinkBtn');
+      const tabPassBtn = document.getElementById('pageTabPasswordBtn');
+      const tabMagicContent = document.getElementById('pageTabMagicLinkContent');
+      const tabPassContent = document.getElementById('pageTabPasswordContent');
+
+      function showAlert(msg, type = 'error') {
+        if (!alertEl) return;
+        alertEl.textContent = msg;
+        alertEl.className = 'auth-alert auth-alert-' + type;
+        alertEl.style.display = 'block';
+      }
+      function hideAlert() {
+        if (alertEl) alertEl.style.display = 'none';
+      }
+
+      // Check URL parameters for redirect or errors
+      const urlParams = new URLSearchParams(window.location.search);
+      const redirectTo = urlParams.get('redirect') || 'index.html';
+
+      // Tab switcher
+      tabMagicBtn.addEventListener('click', () => {
+        hideAlert();
+        tabMagicBtn.classList.add('active');
+        tabPassBtn.classList.remove('active');
+        tabMagicContent.style.display = 'block';
+        tabPassContent.style.display = 'none';
+      });
+
+      tabPassBtn.addEventListener('click', () => {
+        hideAlert();
+        tabPassBtn.classList.add('active');
+        tabMagicBtn.classList.remove('active');
+        tabPassContent.style.display = 'block';
+        tabMagicContent.style.display = 'none';
+      });
+
+      // Magic link form
+      const magicForm = document.getElementById('pageMagicLinkForm');
+      const magicEmailInput = document.getElementById('pageMagicEmail');
+      const magicSubmitBtn = document.getElementById('pageMagicSubmitBtn');
+      const otpSection = document.getElementById('pageOtpVerifySection');
+      const otpDisplay = document.getElementById('pageOtpDisplay');
+
+      magicForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        hideAlert();
+        const email = magicEmailInput.value.trim();
+        if (!email) return;
+
+        magicSubmitBtn.disabled = true;
+        magicSubmitBtn.querySelector('span').textContent = 'Sending email...';
+
+        try {
+          await window.AureliaAuth.signInWithEmailOtp(email);
+          magicForm.style.display = 'none';
+          otpSection.style.display = 'block';
+          if (otpDisplay) otpDisplay.textContent = email;
+          showAlert('Login link & verification code sent! Check your inbox.', 'success');
+        } catch (err) {
+          showAlert(err.message || 'Could not send login email. Please try again.');
+        } finally {
+          magicSubmitBtn.disabled = false;
+          magicSubmitBtn.querySelector('span').textContent = 'Send Login Email / Code';
+        }
+      });
+
+      // OTP Verify
+      const otpForm = document.getElementById('pageOtpVerifyForm');
+      const otpInput = document.getElementById('pageOtpCode');
+      const otpSubmitBtn = document.getElementById('pageOtpSubmitBtn');
+
+      otpForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        hideAlert();
+        const token = otpInput.value.trim();
+        const email = window.AureliaAuth.otpEmailPending || magicEmailInput.value.trim();
+
+        if (!token) return;
+        otpSubmitBtn.disabled = true;
+        otpSubmitBtn.querySelector('span').textContent = 'Verifying...';
+
+        try {
+          await window.AureliaAuth.verifyEmailOtp(email, token);
+          showAlert('Signed in successfully! Redirecting...', 'success');
+          setTimeout(() => {
+            window.location.href = redirectTo;
+          }, 1000);
+        } catch (err) {
+          showAlert(err.message || 'Invalid or expired code. Please try again.');
+        } finally {
+          otpSubmitBtn.disabled = false;
+          otpSubmitBtn.querySelector('span').textContent = 'Verify Code & Sign In';
+        }
+      });
+
+      // Resend & Change buttons
+      document.getElementById('pageOtpResendBtn').addEventListener('click', async () => {
+        const email = window.AureliaAuth.otpEmailPending || magicEmailInput.value.trim();
+        if (!email) return;
+        try {
+          await window.AureliaAuth.signInWithEmailOtp(email);
+          showAlert('A new magic link & code has been emailed to you.', 'success');
+        } catch (err) {
+          showAlert(err.message);
+        }
+      });
+
+      document.getElementById('pageOtpChangeEmailBtn').addEventListener('click', () => {
+        otpSection.style.display = 'none';
+        magicForm.style.display = 'block';
+        hideAlert();
+      });
+
+      // Password Subtoggle
+      let isSignUp = false;
+      const subSignIn = document.getElementById('pageSubtoggleSignIn');
+      const subSignUp = document.getElementById('pageSubtoggleSignUp');
+      const nameGroup = document.getElementById('pageFullNameGroup');
+      const passSubmitBtn = document.getElementById('pagePasswordSubmitBtn');
+
+      subSignIn.addEventListener('click', () => {
+        isSignUp = false;
+        subSignIn.classList.add('active');
+        subSignUp.classList.remove('active');
+        nameGroup.style.display = 'none';
+        passSubmitBtn.querySelector('span').textContent = 'Sign In';
+        hideAlert();
+      });
+
+      subSignUp.addEventListener('click', () => {
+        isSignUp = true;
+        subSignUp.classList.add('active');
+        subSignIn.classList.remove('active');
+        nameGroup.style.display = 'block';
+        passSubmitBtn.querySelector('span').textContent = 'Create Account';
+        hideAlert();
+      });
+
+      // Password Form
+      const passForm = document.getElementById('pagePasswordForm');
+      passForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        hideAlert();
+        const email = document.getElementById('pagePasswordEmail').value.trim();
+        const password = document.getElementById('pagePasswordInput').value;
+        const fullName = document.getElementById('pageFullNameInput').value.trim();
+
+        passSubmitBtn.disabled = true;
+        passSubmitBtn.querySelector('span').textContent = isSignUp ? 'Creating account...' : 'Signing in...';
+
+        try {
+          if (isSignUp) {
+            const data = await window.AureliaAuth.signUpWithPassword(email, password, fullName);
+            if (data.session) {
+              showAlert('Account created! Redirecting...', 'success');
+              setTimeout(() => { window.location.href = redirectTo; }, 1000);
+            } else {
+              showAlert('Registration successful! Please check your email to confirm your account.', 'success');
+            }
+          } else {
+            await window.AureliaAuth.signInWithPassword(email, password);
+            showAlert('Signed in successfully! Redirecting...', 'success');
+            setTimeout(() => { window.location.href = redirectTo; }, 1000);
+          }
+        } catch (err) {
+          showAlert(err.message || 'Authentication error. Please check your credentials.');
+        } finally {
+          passSubmitBtn.disabled = false;
+          passSubmitBtn.querySelector('span').textContent = isSignUp ? 'Create Account' : 'Sign In';
+        }
+      });
+
+      // Forgot password
+      document.getElementById('pageForgotPasswordBtn').addEventListener('click', async () => {
+        const email = document.getElementById('pagePasswordEmail').value.trim();
+        if (!email) {
+          showAlert('Please type your email address above to receive reset instructions.');
+          document.getElementById('pagePasswordEmail').focus();
+          return;
+        }
+        try {
+          await window.AureliaAuth.sendPasswordReset(email);
+          showAlert(`Password reset instructions sent to ${email}`, 'success');
+        } catch (err) {
+          showAlert(err.message || 'Error sending password reset.');
+        }
+      });
+
+      // Watch for logged-in state to toggle card
+      function checkAuthState() {
+        const client = window.getSupabaseClient ? window.getSupabaseClient() : null;
+        if (!client) {
+          setTimeout(checkAuthState, 200);
+          return;
+        }
+
+        client.auth.getSession().then(({ data: { session } }) => {
+          if (session && session.user) {
+            showSignedInCard(session.user);
+          }
+        });
+
+        client.auth.onAuthStateChange((event, session) => {
+          if (session && session.user) {
+            showSignedInCard(session.user);
+          } else {
+            document.getElementById('pageAlreadySignedInCard').style.display = 'none';
+            document.getElementById('pageTabMagicLinkContent').style.display = 'block';
+            document.querySelector('.auth-tabs-nav').style.display = 'flex';
+          }
+        });
+      }
+
+      function showSignedInCard(user) {
+        document.getElementById('pageAlreadySignedInCard').style.display = 'block';
+        document.getElementById('pageSignedInEmail').textContent = user.email;
+        document.getElementById('pageTabMagicLinkContent').style.display = 'none';
+        document.getElementById('pageTabPasswordContent').style.display = 'none';
+        document.querySelector('.auth-tabs-nav').style.display = 'none';
+        hideAlert();
+      }
+
+      document.getElementById('pageSignOutBtn').addEventListener('click', async () => {
+        await window.AureliaAuth.signOut();
+      });
+
+      document.getElementById('pageViewReservationsBtn').addEventListener('click', () => {
+        window.AureliaAuth.openReservationsModal();
+      });
+
+      checkAuthState();
+    });
+  </script>
+</body>
+</html>

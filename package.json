@@ -4,8 +4,8 @@
   "description": "Fine artisanal dining website for Aurelia Bistro & Lounge",
   "scripts": {
     "build": "echo 'Static site ready for deployment'",
-    "dev": "npx serve .",
-    "start": "npx serve ."
+    "dev": "node server.js",
+    "start": "node server.js"
   },
   "keywords": ["restaurant", "website", "fine-dining", "hospitality"],
   "author": "",
