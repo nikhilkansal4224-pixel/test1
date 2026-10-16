@@ -412,6 +412,10 @@
             </div>
 
             <div class="account-hero-actions">
+              <a href="admin.html" id="accAdminPanelBtn" class="btn btn-sm" style="display: none; background-color: var(--accent-gold); color: #1c261e; font-weight: 700; border: none; align-items: center; gap: 0.35rem;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+                <span>Admin Console</span>
+              </a>
               <a href="reservation.html" class="btn btn-primary btn-sm">Reserve a Table</a>
               <button type="button" class="btn btn-outline btn-sm" id="accSignOutBtn" style="border-color: rgba(255,255,255,0.4); color: white;">
                 Sign Out
@@ -647,11 +651,24 @@
               document.getElementById('accHeroTier').textContent = `★ ${profile.member_tier}`;
               document.getElementById('statMemberTier').textContent = profile.member_tier.replace(' Connoisseur', '');
             }
+
+            if (profile.role === 'admin' || email.toLowerCase() === 'nikhilkansal4224@gmail.com') {
+              const adminBtn = document.getElementById('accAdminPanelBtn');
+              if (adminBtn) adminBtn.style.display = 'inline-flex';
+            }
           } else {
             document.getElementById('prefFullName').value = name;
+            if (email.toLowerCase() === 'nikhilkansal4224@gmail.com') {
+              const adminBtn = document.getElementById('accAdminPanelBtn');
+              if (adminBtn) adminBtn.style.display = 'inline-flex';
+            }
           }
         } catch (err) {
           console.warn('Could not load profile record:', err);
+          if (email.toLowerCase() === 'nikhilkansal4224@gmail.com') {
+            const adminBtn = document.getElementById('accAdminPanelBtn');
+            if (adminBtn) adminBtn.style.display = 'inline-flex';
+          }
         }
 
         // Load User Reservations from public.reservations

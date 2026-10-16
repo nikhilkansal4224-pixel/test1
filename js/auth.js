@@ -848,6 +848,14 @@
         ? `<img src="${avatarUrl}" alt="${name}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">` 
         : initial;
 
+      const isAdmin = email.toLowerCase() === 'nikhilkansal4224@gmail.com' || 
+                      user.app_metadata?.role === 'admin' || 
+                      user.user_metadata?.role === 'admin' ||
+                      window.AureliaAuth.profile?.role === 'admin';
+      const badgeMarkup = isAdmin 
+        ? '<span class="user-badge-status" style="background:#f6ffed; border:1px solid #b7eb8f; color:#237804;">🛡️ Executive Admin</span>' 
+        : '<span class="user-badge-status">★ Gold Connoisseur</span>';
+
       const userMenu = document.createElement('div');
       userMenu.className = 'user-profile-menu';
       userMenu.id = 'userProfileMenu';
@@ -864,11 +872,17 @@
             <div class="user-details">
               <strong class="user-dropdown-name">${name}</strong>
               <span class="user-dropdown-email">${email}</span>
-              <span class="user-badge-status">★ Gold Connoisseur</span>
+              ${badgeMarkup}
             </div>
           </div>
           <div class="user-dropdown-divider"></div>
           <div class="user-dropdown-links">
+            ${isAdmin ? `
+              <a href="admin.html" class="user-dropdown-link" style="color: var(--brand-primary); font-weight: 700; background-color: var(--bg-primary); border-radius: var(--radius-sm); margin-bottom: 0.25rem;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+                <span>Admin Control Panel</span>
+              </a>
+            ` : ''}
             <a href="account.html" class="user-dropdown-link" id="navMyAccountBtn">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
               <span>VIP Account & Preferences</span>
@@ -1061,16 +1075,34 @@
 
       // Check current session
       const { data: { session }, error } = await supabase.auth.getSession();
-      if (!error && session) {
+      if (!error && session && session.user) {
         window.AureliaAuth.session = session;
         window.AureliaAuth.user = session.user;
+        supabase.from('profiles').select('role').eq('id', session.user.id).single()
+          .then(({ data }) => {
+            if (data) {
+              window.AureliaAuth.profile = data;
+              updateHeaderUI();
+            }
+          }).catch(() => {});
       }
 
       // Listen for auth state changes (Google OAuth, Magic link, sign-in, sign-out)
       supabase.auth.onAuthStateChange((event, session) => {
         window.AureliaAuth.session = session;
         window.AureliaAuth.user = session ? session.user : null;
+        if (!session) window.AureliaAuth.profile = null;
         updateHeaderUI();
+
+        if (session?.user) {
+          supabase.from('profiles').select('role').eq('id', session.user.id).single()
+            .then(({ data }) => {
+              if (data) {
+                window.AureliaAuth.profile = data;
+                updateHeaderUI();
+              }
+            }).catch(() => {});
+        }
 
         if (event === 'SIGNED_IN' && session?.user) {
           closeModal();

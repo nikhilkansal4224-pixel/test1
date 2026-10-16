@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Executive Console — AURELIA Bistro & Lounge</title>
+  <meta name="description" content="Aurelia Bistro & Lounge administrative management console for reservations, guest directory, inquiries, and subscriptions.">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Admin Specific Styling */
+    .admin-wrapper {
+      background-color: #F6F4F0;
+      min-height: calc(100vh - 80px);
+      padding: 2.5rem 0 5rem 0;
+    }
+
+    .admin-header-card {
+      background-color: var(--brand-secondary);
+      color: var(--text-inverted);
+      border-radius: var(--radius-md);
+      padding: 2.25rem 2.5rem;
+      margin-bottom: 2rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .admin-title-badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent-gold);
+      margin-bottom: 0.4rem;
+    }
+
+    .admin-header-card h1 {
+      font-family: var(--font-serif);
+      font-size: 2.2rem;
+      color: var(--text-inverted);
+      margin-bottom: 0.25rem;
+    }
+
+    .admin-live-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      background-color: rgba(46, 125, 50, 0.25);
+      border: 1px solid rgba(46, 125, 50, 0.5);
+      color: #70E080;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 0.35rem 0.85rem;
+      border-radius: var(--radius-full);
+      letter-spacing: 0.05em;
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background-color: #4CAF50;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #4CAF50;
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    /* Admin Stat Grid */
+    .admin-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .admin-stat-box {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--transition-fast), border-color var(--transition-fast);
+    }
+
+    .admin-stat-box:hover {
+      border-color: var(--brand-primary);
+      transform: translateY(-2px);
+    }
+
+    .stat-box-label {
+      font-size: 0.76rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .stat-box-num {
+      font-family: var(--font-serif);
+      font-size: 2.1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.1;
+    }
+
+    .stat-box-sub {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-top: 0.4rem;
+    }
+
+    /* Admin Navigation Tabs */
+    .admin-nav-tabs {
+      display: flex;
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-md);
+      padding: 0.4rem;
+      margin-bottom: 2rem;
+      gap: 0.5rem;
+      overflow-x: auto;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .admin-tab-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.75rem 1.25rem;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all var(--transition-fast);
+    }
+
+    .admin-tab-btn:hover {
+      background-color: var(--bg-primary);
+      color: var(--brand-primary);
+    }
+
+    .admin-tab-btn.active {
+      background-color: var(--brand-primary);
+      color: var(--text-inverted);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .admin-tab-btn .tab-badge {
+      background-color: rgba(0, 0, 0, 0.12);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.15rem 0.5rem;
+      border-radius: var(--radius-full);
+    }
+
+    .admin-tab-btn.active .tab-badge {
+      background-color: rgba(255, 255, 255, 0.25);
+      color: var(--text-inverted);
+    }
+
+    /* Admin Main Content Container */
+    .admin-card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-md);
+      padding: 2rem;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 2.5rem;
+    }
+
+    .admin-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border-subtle);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .admin-card-title {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .admin-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      flex-wrap: wrap;
+    }
+
+    .admin-search-input {
+      padding: 0.6rem 1rem;
+      font-size: 0.9rem;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      width: 260px;
+      background-color: var(--bg-primary);
+    }
+
+    .admin-filter-select {
+      padding: 0.6rem 1rem;
+      font-size: 0.9rem;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+    }
+
+    /* Admin Tables */
+    .admin-table-container {
+      overflow-x: auto;
+    }
+
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      text-align: left;
+    }
+
+    .admin-table th {
+      background-color: var(--bg-primary);
+      color: var(--text-secondary);
+      font-weight: 700;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .admin-table td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border-subtle);
+      vertical-align: middle;
+      color: var(--text-primary);
+    }
+
+    .admin-table tr:hover td {
+      background-color: #FAF8F5;
+    }
+
+    /* Status Pills */
+    .status-pill {
+      display: inline-block;
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.25rem 0.65rem;
+      border-radius: var(--radius-full);
+    }
+
+    .status-confirmed {
+      background-color: var(--success-bg);
+      color: var(--success);
+      border: 1px solid #b7eb8f;
+    }
+
+    .status-seated, .status-completed {
+      background-color: #E6F7FF;
+      color: #096DD9;
+      border: 1px solid #91D5FF;
+    }
+
+    .status-cancelled {
+      background-color: #FFF1F0;
+      color: #CF1322;
+      border: 1px solid #FFA39E;
+    }
+
+    /* Row actions */
+    .action-btn-group {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .btn-table-action {
+      padding: 0.35rem 0.7rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-subtle);
+      background-color: var(--bg-surface);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      color: var(--text-primary);
+    }
+
+    .btn-table-action:hover {
+      background-color: var(--bg-primary);
+      border-color: var(--brand-primary);
+    }
+
+    .btn-table-action.confirm:hover {
+      background-color: var(--success-bg);
+      color: var(--success);
+      border-color: #b7eb8f;
+    }
+
+    .btn-table-action.cancel:hover {
+      background-color: #fff5f5;
+      color: #c92a2a;
+      border-color: #ffa39e;
+    }
+
+    /* Access Denied Card */
+    .access-denied-box {
+      text-align: center;
+      padding: 6rem 1.5rem;
+      max-width: 580px;
+      margin: 0 auto;
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+    }
+
+    @media (max-width: 992px) {
+      .admin-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .admin-stats-grid {
+        grid-template-columns: 1fr;
+      }
+    /* Modal styles */
+    .admin-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 1.5rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+    .admin-modal-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .admin-modal-card {
+      background: var(--bg-surface);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-card);
+      box-shadow: var(--shadow-lg);
+      max-width: 580px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 2.25rem;
+      position: relative;
+    }
+    .admin-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .admin-modal-title {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      color: var(--text-primary);
+      margin: 0;
+    }
+    .admin-modal-close {
+      background: none;
+      border: none;
+      font-size: 1.6rem;
+      cursor: pointer;
+      color: var(--text-muted);
+      line-height: 1;
+      padding: 0.25rem;
+    }
+    .admin-modal-close:hover {
+      color: var(--text-primary);
+    }
+    .admin-form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .admin-form-group {
+      margin-bottom: 1rem;
+    }
+    .admin-form-group.full {
+      grid-column: span 2;
+    }
+    .admin-form-label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.35rem;
+    }
+    .admin-form-input, .admin-form-select, .admin-form-textarea {
+      width: 100%;
+      padding: 0.65rem 0.85rem;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      box-sizing: border-box;
+    }
+    .admin-form-input:focus, .admin-form-select:focus, .admin-form-textarea:focus {
+      outline: none;
+      border-color: var(--brand-primary);
+      box-shadow: 0 0 0 3px rgba(140, 74, 47, 0.12);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Announcement Bar -->
+  <div class="top-banner">
+    Aurelia Executive Console • Authorized Personnel Only • <a href="index.html" style="color: inherit; text-decoration: underline;">Return to Guest Website</a>
+  </div>
+
+  <!-- Header / Navigation -->
+  <header class="site-header">
+    <div class="container header-container">
+      <a href="index.html" class="logo-brand">
+        <span class="brand-title">AURELIA</span>
+        <span class="brand-subtitle">EXECUTIVE CONSOLE</span>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link">Main Site</a></li>
+          <li><a href="menu.html" class="nav-link">Menu</a></li>
+          <li><a href="reservation.html" class="nav-link">Reservations</a></li>
+          <li><a href="account.html" class="nav-link">Guest Portal</a></li>
+          <li><a href="admin.html" class="nav-link active" style="color: var(--brand-primary); font-weight: 700;">Admin Console</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <span id="adminUserPill" style="font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);"></span>
+        <button type="button" class="btn btn-outline btn-sm" id="adminHeaderLogoutBtn">Sign Out</button>
+        <button class="mobile-toggle" aria-label="Toggle navigation menu">&#9776;</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-wrapper">
+    <div class="container">
+
+      <!-- Loading State -->
+      <div id="adminLoadingState" style="text-align: center; padding: 7rem 1rem;">
+        <div class="auth-spinner"></div>
+        <h3 style="font-family: var(--font-serif); margin-top: 1rem; color: var(--text-primary);">
+          Verifying administrative credentials...
+        </h3>
+      </div>
+
+      <!-- Access Restricted Notice (Shown if user is not admin) -->
+      <div id="adminAccessDenied" class="access-denied-box" style="display: none;">
+        <div style="font-size: 3.5rem; margin-bottom: 1rem;">🛡️</div>
+        <span class="admin-title-badge" style="color: #c92a2a;">Access Restricted</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2rem; margin-bottom: 0.75rem;">Administrator Authorization Required</h2>
+        <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; margin-bottom: 2rem;">
+          This console is reserved exclusively for restaurant management, maître d', and authorized administrators. 
+          Your signed-in account does not carry the administrative role.
+        </p>
+        <div style="display: flex; gap: 0.85rem; justify-content: center; flex-wrap: wrap;">
+          <a href="auth.html?redirect=admin.html" class="btn btn-primary">Sign In as Admin</a>
+          <a href="index.html" class="btn btn-secondary">Return to Guest Website</a>
+        </div>
+      </div>
+
+      <!-- Authenticated Admin Content -->
+      <div id="adminDashboardContent" style="display: none;">
+
+        <!-- Executive Banner -->
+        <div class="admin-header-card">
+          <div>
+            <span class="admin-title-badge">Aurelia Flagship Operations</span>
+            <h1>Executive Management Console</h1>
+            <p style="color: #D1DDD1; font-size: 0.92rem;">
+              San Francisco Flagship • Live real-time database management
+            </p>
+          </div>
+
+          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.65rem;">
+            <div class="admin-live-chip">
+              <span class="pulse-dot"></span>
+              <span>LIVE SUPABASE SYNC</span>
+            </div>
+            <span id="adminSessionEmail" style="font-size: 0.82rem; color: rgba(255,255,255,0.7);"></span>
+          </div>
+        </div>
+
+        <!-- Metric Stat Cards -->
+        <div class="admin-stats-grid">
+          <div class="admin-stat-box">
+            <div class="stat-box-label">Total Reservations</div>
+            <div class="stat-box-num" id="statTotalRes">0</div>
+            <div class="stat-box-sub" id="statConfirmedRes">0 confirmed</div>
+          </div>
+          <div class="admin-stat-box">
+            <div class="stat-box-label">Registered Guests</div>
+            <div class="stat-box-num" id="statTotalGuests">0</div>
+            <div class="stat-box-sub">VIP Connoisseur members</div>
+          </div>
+          <div class="admin-stat-box">
+            <div class="stat-box-label">Guest Inquiries</div>
+            <div class="stat-box-num" id="statTotalMessages">0</div>
+            <div class="stat-box-sub">Contact submissions</div>
+          </div>
+          <div class="admin-stat-box">
+            <div class="stat-box-label">Newsletter Members</div>
+            <div class="stat-box-num" id="statTotalSubscribers">0</div>
+            <div class="stat-box-sub">Private guest list</div>
+          </div>
+        </div>
+
+        <!-- Admin Navigation Tabs -->
+        <div class="admin-nav-tabs">
+          <button type="button" class="admin-tab-btn active" data-tab="reservations">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            <span>Reservations</span>
+            <span class="tab-badge" id="tabBadgeRes">0</span>
+          </button>
+          <button type="button" class="admin-tab-btn" data-tab="guests">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            <span>Guest Directory</span>
+            <span class="tab-badge" id="tabBadgeGuests">0</span>
+          </button>
+          <button type="button" class="admin-tab-btn" data-tab="messages">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            <span>Contact Inquiries</span>
+            <span class="tab-badge" id="tabBadgeMessages">0</span>
+          </button>
+          <button type="button" class="admin-tab-btn" data-tab="subscribers">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+            <span>Newsletter Subscribers</span>
+            <span class="tab-badge" id="tabBadgeSubs">0</span>
+          </button>
+          <button type="button" class="admin-tab-btn" data-tab="reviews">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            <span>Reviews</span>
+            <span class="tab-badge" id="tabBadgeReviews">0</span>
+          </button>
+        </div>
+
+        <!-- ==================== TAB 1: RESERVATIONS ==================== -->
+        <section class="admin-card" id="tabContentReservations">
+          <div class="admin-card-header">
+            <div>
+              <h2 class="admin-card-title">Table Reservations Manager</h2>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 2px;">
+                Review bookings, update table seating, and manage dining statuses.
+              </p>
+            </div>
+
+            <div class="admin-toolbar">
+              <input type="text" id="resSearchInput" class="admin-search-input" placeholder="Search by name, email, or ref...">
+              <select id="resFilterStatus" class="admin-filter-select">
+                <option value="all">All Statuses</option>
+                <option value="Confirmed">Confirmed</option>
+                <option value="Seated">Seated / Completed</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+              <button type="button" class="btn btn-primary btn-sm" id="btnOpenNewBookingModal">+ New Booking</button>
+              <button type="button" class="btn btn-outline btn-sm" id="btnRefreshRes">↻ Refresh</button>
+            </div>
+          </div>
+
+          <div class="admin-table-container">
+            <table class="admin-table" id="reservationsTable">
+              <thead>
+                <tr>
+                  <th>Booking Ref</th>
+                  <th>Guest Info</th>
+                  <th>Date & Time</th>
+                  <th>Party & Seating</th>
+                  <th>Experience & Notes</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="reservationsTableBody">
+                <!-- Dynamically loaded -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ==================== TAB 2: GUEST DIRECTORY ==================== -->
+        <section class="admin-card" id="tabContentGuests" style="display: none;">
+          <div class="admin-card-header">
+            <div>
+              <h2 class="admin-card-title">Registered VIP Guest Directory</h2>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 2px;">
+                Registered profiles, dining preferences, and connoisseur club tiers.
+              </p>
+            </div>
+            <div class="admin-toolbar">
+              <input type="text" id="guestSearchInput" class="admin-search-input" placeholder="Search by name or email...">
+            </div>
+          </div>
+
+          <div class="admin-table-container">
+            <table class="admin-table" id="guestsTable">
+              <thead>
+                <tr>
+                  <th>Guest</th>
+                  <th>Contact</th>
+                  <th>Member Tier</th>
+                  <th>Role</th>
+                  <th>Preferred Seating</th>
+                  <th>Dietary Notes</th>
+                  <th>Member Since</th>
+                </tr>
+              </thead>
+              <tbody id="guestsTableBody">
+                <!-- Dynamically loaded -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ==================== TAB 3: CONTACT INQUIRIES ==================== -->
+        <section class="admin-card" id="tabContentMessages" style="display: none;">
+          <div class="admin-card-header">
+            <div>
+              <h2 class="admin-card-title">Contact Us Submissions</h2>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 2px;">
+                Messages sent through the website contact form.
+              </p>
+            </div>
+            <div class="admin-toolbar">
+              <button type="button" class="btn btn-outline btn-sm" id="btnRefreshMessages">↻ Refresh</button>
+            </div>
+          </div>
+
+          <div class="admin-table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Sender</th>
+                  <th>Email</th>
+                  <th>Subject</th>
+                  <th>Message Body</th>
+                </tr>
+              </thead>
+              <tbody id="messagesTableBody">
+                <!-- Dynamically loaded -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ==================== TAB 4: NEWSLETTER SUBSCRIBERS ==================== -->
+        <section class="admin-card" id="tabContentSubscribers" style="display: none;">
+          <div class="admin-card-header">
+            <div>
+              <h2 class="admin-card-title">Newsletter & Tasting Invitations List</h2>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 2px;">
+                Guest email addresses subscribed to seasonal harvest releases.
+              </p>
+            </div>
+            <div class="admin-toolbar">
+              <button type="button" class="btn btn-primary btn-sm" id="btnExportSubsCsv">📥 Export to CSV</button>
+            </div>
+          </div>
+
+          <div class="admin-table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Subscriber Email</th>
+                  <th>Subscribed Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="subscribersTableBody">
+                <!-- Dynamically loaded -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ==================== TAB 5: REVIEWS ==================== -->
+        <section class="admin-card" id="tabContentReviews" style="display: none;">
+          <div class="admin-card-header">
+            <div>
+              <h2 class="admin-card-title">Guest Reviews & Ratings</h2>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 2px;">
+                Guest testimonials and dining ratings.
+              </p>
+            </div>
+          </div>
+
+          <div class="admin-table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Reviewer</th>
+                  <th>Rating</th>
+                  <th>Experience / Dish</th>
+                  <th>Comment</th>
+                  <th>Verified</th>
+                </tr>
+              </thead>
+              <tbody id="reviewsTableBody">
+                <!-- Dynamically loaded -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      </div>
+
+    </div>
+
+    <!-- Modal: New Manual / Phone Booking -->
+    <div class="admin-modal-overlay" id="newBookingModal">
+      <div class="admin-modal-card">
+        <div class="admin-modal-header">
+          <div>
+            <span class="admin-title-badge">Maître D' Service</span>
+            <h3 class="admin-modal-title">New Table Reservation</h3>
+          </div>
+          <button type="button" class="admin-modal-close" id="btnCloseBookingModal" aria-label="Close modal">&times;</button>
+        </div>
+
+        <form id="newBookingForm">
+          <div class="admin-form-grid">
+            <div class="admin-form-group">
+              <label class="admin-form-label" for="nbGuestName">Guest Full Name *</label>
+              <input type="text" id="nbGuestName" class="admin-form-input" required placeholder="e.g. Lady Evelyn Vance">
+            </div>
+            <div class="admin-form-group">
+              <label class="admin-form-label" for="nbGuestEmail">Email Address *</label>
+              <input type="email" id="nbGuestEmail" class="admin-form-input" required placeholder="guest@example.com">
+            </div>
+          </div>
+
+          <div class="admin-form-grid">
+            <div class="admin-form-group">
+              <label class="admin-form-label" for="nbDate">Reservation Date *</label>
+              <input type="date" id="nbDate" class="admin-form-input" required>
+            </div>
+            <div class="admin-form-group">
+              <label class="admin-form-label" for="nbTime">Service Time *</label>
+              <select id="nbTime" class="admin-form-select" required>
+                <option value="5:00 PM">5:00 PM (Early Dinner)</option>
+                <option value="5:30 PM">5:30 PM</option>
+                <option value="6:00 PM">6:00 PM</option>
+                <option value="6:30 PM">6:30 PM</option>
+                <option value="7:00 PM" selected>7:00 PM (Prime)</option>
+                <option value="7:30 PM">7:30 PM (Prime)</option>
+                <option value="8:00 PM">8:00 PM</option>
+                <option value="8:30 PM">8:30 PM</option>
+                <option value="9:00 PM">9:00 PM (Late Seating)</option>
+                <option value="9:30 PM">9:30 PM</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="admin-form-grid">
+            <div class="admin-form-group">
+              <label class="admin-form-label" for="nbGuests">Party Size *</label>
+              <select id="nbGuests" class="admin-form-select" required>
+                <option value="1 Guest">1 Guest</option>
+                <option value="2 Guests" selected>2 Guests</option>
+                <option value="3 Guests">3 Guests</option>
+                <option value="4 Guests">4 Guests</option>
+                <option value="5 Guests">5 Guests</option>
+                <option value="6 Guests">6 Guests</option>
+                <option value="8+ Guests">8+ Guests (Private Dining)</option>
+              </select>
+            </div>
+            <div class="admin-form-group">
+              <label class="admin-form-label" for="nbSeating">Seating Area *</label>
+              <select id="nbSeating" class="admin-form-select" required>
+                <option value="Indoor Dining" selected>Main Dining Room</option>
+                <option value="Outdoor Terrace">Outdoor Heated Terrace</option>
+                <option value="Chef's Counter">Chef's Tasting Counter</option>
+                <option value="Private Salon">Private Salon</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="admin-form-group">
+            <label class="admin-form-label" for="nbExperience">Dining Experience *</label>
+            <select id="nbExperience" class="admin-form-select" required>
+              <option value="A La Carte Dinner" selected>A La Carte Dinner</option>
+              <option value="Seasonal 5-Course Tasting">Seasonal 5-Course Tasting ($185/guest)</option>
+              <option value="Sommelier Reserve Pairing">Sommelier Reserve Grand Tasting ($295/guest)</option>
+              <option value="Chef's Counter Experience">Chef's Counter Experience</option>
+            </select>
+          </div>
+
+          <div class="admin-form-group">
+            <label class="admin-form-label" for="nbNotes">Maître D' Notes / Dietary Requirements</label>
+            <textarea id="nbNotes" class="admin-form-textarea" rows="2" placeholder="e.g. 25th Wedding Anniversary, Champagne upon arrival, Gluten-free for guest 2"></textarea>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-subtle);">
+            <button type="button" class="btn btn-outline btn-sm" id="btnCancelBookingModal">Cancel</button>
+            <button type="submit" class="btn btn-primary btn-sm" id="btnSubmitNewBooking">Confirm & Book Table</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-column">
+        <div class="logo-brand" style="margin-bottom: 1rem;">
+          <span class="brand-title">AURELIA</span>
+          <span class="brand-subtitle">EXECUTIVE CONSOLE</span>
+        </div>
+        <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
+          Internal restaurant administration and guest service operations platform.
+        </p>
+      </div>
+
+      <div class="footer-column">
+        <h4>Navigation</h4>
+        <ul class="footer-links">
+          <li><a href="index.html">Main Website</a></li>
+          <li><a href="menu.html">Seasonal Menu</a></li>
+          <li><a href="reservation.html">Table Reservations</a></li>
+          <li><a href="account.html">Guest Portal</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Operations Contact</h4>
+        <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
+          Private Dining & Maître D': (415) 555-0198
+        </p>
+        <p style="font-size: 0.9rem; color: var(--text-secondary);">
+          Admin: nikhilkansal4224@gmail.com
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/main.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const loadingEl = document.getElementById('adminLoadingState');
+      const deniedEl = document.getElementById('adminAccessDenied');
+      const dashboardEl = document.getElementById('adminDashboardContent');
+
+      // State store
+      let allReservations = [];
+      let allGuests = [];
+      let allMessages = [];
+      let allSubscribers = [];
+      let allReviews = [];
+
+      // 1. Verify Admin Access
+      async function verifyAdmin() {
+        const client = window.getSupabaseClient ? window.getSupabaseClient() : null;
+        if (!client) {
+          setTimeout(verifyAdmin, 150);
+          return;
+        }
+
+        const { data: { session } } = await client.auth.getSession();
+        if (!session || !session.user) {
+          showAccessDenied();
+          return;
+        }
+
+        const user = session.user;
+        const email = (user.email || '').toLowerCase();
+
+        // Check profiles table for role or email match
+        try {
+          const { data: profile } = await client
+            .from('profiles')
+            .select('*')
+            .eq('id', user.id)
+            .single();
+
+          const isAdmin = (profile && profile.role === 'admin') || email === 'nikhilkansal4224@gmail.com';
+
+          if (isAdmin) {
+            initDashboard(client, user);
+          } else {
+            showAccessDenied();
+          }
+        } catch (err) {
+          if (email === 'nikhilkansal4224@gmail.com') {
+            initDashboard(client, user);
+          } else {
+            showAccessDenied();
+          }
+        }
+      }
+
+      function showAccessDenied() {
+        loadingEl.style.display = 'none';
+        deniedEl.style.display = 'block';
+        dashboardEl.style.display = 'none';
+      }
+
+      // 2. Initialize Dashboard
+      async function initDashboard(client, user) {
+        loadingEl.style.display = 'none';
+        deniedEl.style.display = 'none';
+        dashboardEl.style.display = 'block';
+
+        document.getElementById('adminUserPill').textContent = user.email;
+        document.getElementById('adminSessionEmail').textContent = `Signed in as Administrator: ${user.email}`;
+
+        // Header logout button
+        document.getElementById('adminHeaderLogoutBtn').addEventListener('click', async () => {
+          await window.AureliaAuth.signOut();
+          window.location.href = 'index.html';
+        });
+
+        // Tabs switching
+        setupTabs();
+
+        // Load all data sets
+        await Promise.all([
+          fetchReservations(client),
+          fetchGuests(client),
+          fetchMessages(client),
+          fetchSubscribers(client),
+          fetchReviews(client)
+        ]);
+
+        // Search and filter listeners
+        setupFilters(client);
+      }
+
+      // 3. Tab Switching
+      function setupTabs() {
+        const tabBtns = document.querySelectorAll('.admin-tab-btn');
+        tabBtns.forEach(btn => {
+          btn.addEventListener('click', () => {
+            tabBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const tabName = btn.getAttribute('data-tab');
+            document.getElementById('tabContentReservations').style.display = tabName === 'reservations' ? 'block' : 'none';
+            document.getElementById('tabContentGuests').style.display = tabName === 'guests' ? 'block' : 'none';
+            document.getElementById('tabContentMessages').style.display = tabName === 'messages' ? 'block' : 'none';
+            document.getElementById('tabContentSubscribers').style.display = tabName === 'subscribers' ? 'block' : 'none';
+            document.getElementById('tabContentReviews').style.display = tabName === 'reviews' ? 'block' : 'none';
+          });
+        });
+      }
+
+      // 4. Data Fetching
+      async function fetchReservations(client) {
+        try {
+          const { data, error } = await client
+            .from('reservations')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+          if (error) throw error;
+          allReservations = data || [];
+
+          // Update metrics
+          document.getElementById('statTotalRes').textContent = allReservations.length;
+          document.getElementById('tabBadgeRes').textContent = allReservations.length;
+          const confirmedCount = allReservations.filter(r => (r.status || '').toLowerCase() === 'confirmed').length;
+          document.getElementById('statConfirmedRes').textContent = `${confirmedCount} confirmed`;
+
+          renderReservations(allReservations);
+        } catch (err) {
+          console.error('Fetch reservations error:', err);
+        }
+      }
+
+      async function fetchGuests(client) {
+        try {
+          const { data, error } = await client
+            .from('profiles')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+          if (error) throw error;
+          allGuests = data || [];
+
+          document.getElementById('statTotalGuests').textContent = allGuests.length;
+          document.getElementById('tabBadgeGuests').textContent = allGuests.length;
+
+          renderGuests(allGuests);
+        } catch (err) {
+          console.error('Fetch guests error:', err);
+        }
+      }
+
+      async function fetchMessages(client) {
+        try {
+          const { data, error } = await client
+            .from('contact_messages')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+          if (error) throw error;
+          allMessages = data || [];
+
+          document.getElementById('statTotalMessages').textContent = allMessages.length;
+          document.getElementById('tabBadgeMessages').textContent = allMessages.length;
+
+          renderMessages(allMessages);
+        } catch (err) {
+          console.error('Fetch messages error:', err);
+        }
+      }
+
+      async function fetchSubscribers(client) {
+        try {
+          const { data, error } = await client
+            .from('newsletter_subscribers')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+          if (error) throw error;
+          allSubscribers = data || [];
+
+          document.getElementById('statTotalSubscribers').textContent = allSubscribers.length;
+          document.getElementById('tabBadgeSubs').textContent = allSubscribers.length;
+
+          renderSubscribers(allSubscribers);
+        } catch (err) {
+          console.error('Fetch subscribers error:', err);
+        }
+      }
+
+      async function fetchReviews(client) {
+        try {
+          const { data, error } = await client
+            .from('reviews')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+          if (error) throw error;
+          allReviews = data || [];
+
+          document.getElementById('tabBadgeReviews').textContent = allReviews.length;
+          renderReviews(allReviews);
+        } catch (err) {
+          console.error('Fetch reviews error:', err);
+        }
+      }
+
+      // 5. Render Functions
+      function renderReservations(list) {
+        const tbody = document.getElementById('reservationsTableBody');
+        if (!list.length) {
+          tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">No reservations found matching criteria.</td></tr>`;
+          return;
+        }
+
+        let html = '';
+        list.forEach(r => {
+          const status = r.status || 'Confirmed';
+          const statusClass = status.toLowerCase() === 'confirmed' ? 'status-confirmed' : status.toLowerCase() === 'seated' ? 'status-seated' : 'status-cancelled';
+          const refCode = r.id ? r.id.substring(0, 8).toUpperCase() : 'N/A';
+
+          html += `
+            <tr id="adminRowRes-${r.id}">
+              <td style="font-family: monospace; font-weight: 700; color: var(--brand-primary);">#${refCode}</td>
+              <td>
+                <div style="font-weight: 700;">${r.name || 'Valued Guest'}</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">${r.email || 'No email'}</div>
+              </td>
+              <td>
+                <div style="font-weight: 600;">${r.reservation_date || 'N/A'}</div>
+                <div style="font-size: 0.8rem; color: var(--text-secondary);">${r.reservation_time || '7:00 PM'}</div>
+              </td>
+              <td>
+                <span style="font-weight: 600;">${r.guests || '2 Guests'}</span>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">${r.seating_area || 'Indoor Dining'}</div>
+              </td>
+              <td>
+                <div style="font-size: 0.85rem; font-weight: 600;">${r.experience || 'A La Carte'}</div>
+                ${r.notes ? `<div style="font-size: 0.78rem; color: var(--text-muted); font-style: italic;">"${r.notes}"</div>` : ''}
+              </td>
+              <td>
+                <span class="status-pill ${statusClass}" id="adminBadgeRes-${r.id}">${status}</span>
+              </td>
+              <td>
+                <div class="action-btn-group">
+                  <button type="button" class="btn-table-action confirm" onclick="updateReservationStatus('${r.id}', 'Confirmed')" title="Confirm Table">✓ Confirm</button>
+                  <button type="button" class="btn-table-action" onclick="updateReservationStatus('${r.id}', 'Seated')" title="Mark as Seated">🍽 Seated</button>
+                  <button type="button" class="btn-table-action cancel" onclick="updateReservationStatus('${r.id}', 'Cancelled')" title="Cancel Table">✕ Cancel</button>
+                  <button type="button" class="btn-table-action" onclick="deleteReservation('${r.id}')" title="Delete Booking" style="color: #c92a2a;">🗑</button>
+                </div>
+              </td>
+            </tr>
+          `;
+        });
+        tbody.innerHTML = html;
+      }
+
+      function renderGuests(list) {
+        const tbody = document.getElementById('guestsTableBody');
+        if (!list.length) {
+          tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">No registered guests found.</td></tr>`;
+          return;
+        }
+
+        let html = '';
+        list.forEach(g => {
+          const dateStr = g.created_at ? new Date(g.created_at).toLocaleDateString() : 'Recent';
+          const roleBadge = g.role === 'admin' ? '<span class="status-pill status-confirmed">Admin</span>' : '<span class="status-pill" style="background:#f0f0f0; color:#555;">Guest</span>';
+
+          html += `
+            <tr>
+              <td>
+                <div style="font-weight: 700;">${g.full_name || 'Guest'}</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">${g.email || 'No email'}</div>
+              </td>
+              <td>${g.phone || '<span style="color: var(--text-muted);">None</span>'}</td>
+              <td><span style="font-weight: 600; color: var(--accent-gold);">★ ${g.member_tier || 'Gold Connoisseur'}</span></td>
+              <td>${roleBadge}</td>
+              <td>${g.preferred_seating || 'Indoor Dining'}</td>
+              <td><span style="font-size: 0.84rem; color: var(--text-secondary);">${g.dietary_notes || 'None noted'}</span></td>
+              <td><span style="font-size: 0.82rem; color: var(--text-muted);">${dateStr}</span></td>
+            </tr>
+          `;
+        });
+        tbody.innerHTML = html;
+      }
+
+      function renderMessages(list) {
+        const tbody = document.getElementById('messagesTableBody');
+        if (!list.length) {
+          tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">No contact inquiries received yet.</td></tr>`;
+          return;
+        }
+
+        let html = '';
+        list.forEach(m => {
+          const dateStr = m.created_at ? new Date(m.created_at).toLocaleString() : 'Recent';
+          html += `
+            <tr>
+              <td style="font-size: 0.82rem; color: var(--text-muted); white-space: nowrap;">${dateStr}</td>
+              <td style="font-weight: 700;">${m.name || 'Anonymous'}</td>
+              <td><a href="mailto:${m.email}" style="color: var(--brand-primary);">${m.email}</a></td>
+              <td style="font-weight: 600;">${m.subject || 'General Inquiry'}</td>
+              <td style="font-size: 0.85rem; max-width: 320px; line-height: 1.4;">${m.message || ''}</td>
+            </tr>
+          `;
+        });
+        tbody.innerHTML = html;
+      }
+
+      function renderSubscribers(list) {
+        const tbody = document.getElementById('subscribersTableBody');
+        if (!list.length) {
+          tbody.innerHTML = `<tr><td colspan="3" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">No newsletter subscribers yet.</td></tr>`;
+          return;
+        }
+
+        let html = '';
+        list.forEach(s => {
+          const dateStr = s.created_at ? new Date(s.created_at).toLocaleDateString() : 'Recent';
+          html += `
+            <tr>
+              <td style="font-weight: 600;">${s.email}</td>
+              <td style="font-size: 0.82rem; color: var(--text-muted);">${dateStr}</td>
+              <td><span class="status-pill status-confirmed">Active</span></td>
+            </tr>
+          `;
+        });
+        tbody.innerHTML = html;
+      }
+
+      function renderReviews(list) {
+        const tbody = document.getElementById('reviewsTableBody');
+        if (!list.length) {
+          tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">No reviews found.</td></tr>`;
+          return;
+        }
+
+        let html = '';
+        list.forEach(rev => {
+          const stars = '★'.repeat(rev.rating || 5);
+          html += `
+            <tr>
+              <td style="font-weight: 700;">${rev.name || 'Guest'}</td>
+              <td style="color: var(--accent-gold); font-size: 1.1rem;">${stars}</td>
+              <td style="font-weight: 600;">${rev.location_or_product || 'Dining Experience'}</td>
+              <td style="font-size: 0.86rem; line-height: 1.4;">"${rev.comment || ''}"</td>
+              <td><span class="status-pill ${rev.verified ? 'status-confirmed' : ''}">${rev.verified ? 'Verified' : 'Pending'}</span></td>
+            </tr>
+          `;
+        });
+        tbody.innerHTML = html;
+      }
+
+      // 6. Action Handlers (Status change, delete, export)
+      window.updateReservationStatus = async function (id, newStatus) {
+        const client = window.getSupabaseClient();
+        try {
+          const { error } = await client
+            .from('reservations')
+            .update({ status: newStatus })
+            .eq('id', id);
+
+          if (error) throw error;
+          window.showToast(`Reservation #${id.substring(0, 8)} set to ${newStatus}`, 'success');
+
+          // Update in local memory
+          const item = allReservations.find(r => r.id === id);
+          if (item) item.status = newStatus;
+
+          const badge = document.getElementById(`adminBadgeRes-${id}`);
+          if (badge) {
+            badge.textContent = newStatus;
+            badge.className = `status-pill ${newStatus.toLowerCase() === 'confirmed' ? 'status-confirmed' : newStatus.toLowerCase() === 'seated' ? 'status-seated' : 'status-cancelled'}`;
+          }
+        } catch (err) {
+          console.error('Update status error:', err);
+          window.showToast(err.message || 'Failed to update reservation.', 'error');
+        }
+      };
+
+      window.deleteReservation = async function (id) {
+        if (!confirm(`Are you sure you want to permanently delete booking #${id.substring(0, 8)}?`)) return;
+        const client = window.getSupabaseClient();
+        try {
+          const { error } = await client
+            .from('reservations')
+            .delete()
+            .eq('id', id);
+
+          if (error) throw error;
+          window.showToast('Reservation deleted.', 'info');
+          const row = document.getElementById(`adminRowRes-${id}`);
+          if (row) row.remove();
+          allReservations = allReservations.filter(r => r.id !== id);
+          document.getElementById('statTotalRes').textContent = allReservations.length;
+          document.getElementById('tabBadgeRes').textContent = allReservations.length;
+        } catch (err) {
+          console.error('Delete reservation error:', err);
+          window.showToast(err.message || 'Failed to delete reservation.', 'error');
+        }
+      };
+
+      // Filters setup
+      function setupFilters(client) {
+        const searchInput = document.getElementById('resSearchInput');
+        const filterSelect = document.getElementById('resFilterStatus');
+
+        function applyResFilter() {
+          const q = (searchInput.value || '').toLowerCase().trim();
+          const s = filterSelect.value;
+
+          const filtered = allReservations.filter(r => {
+            const matchQuery = !q || 
+              (r.name || '').toLowerCase().includes(q) || 
+              (r.email || '').toLowerCase().includes(q) || 
+              (r.id || '').toLowerCase().includes(q);
+            const matchStatus = s === 'all' || (r.status || 'Confirmed').toLowerCase() === s.toLowerCase();
+            return matchQuery && matchStatus;
+          });
+
+          renderReservations(filtered);
+        }
+
+        searchInput.addEventListener('input', applyResFilter);
+        filterSelect.addEventListener('change', applyResFilter);
+
+        document.getElementById('btnRefreshRes').addEventListener('click', () => fetchReservations(client));
+        document.getElementById('btnRefreshMessages').addEventListener('click', () => fetchMessages(client));
+
+        // Export Subscribers to CSV
+        document.getElementById('btnExportSubsCsv').addEventListener('click', () => {
+          if (!allSubscribers.length) {
+            window.showToast('No subscribers to export.', 'info');
+            return;
+          }
+          let csv = 'Email,Date Subscribed\n';
+          allSubscribers.forEach(s => {
+            csv += `"${s.email}","${s.created_at || ''}"\n`;
+          });
+          const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.setAttribute('href', url);
+          link.setAttribute('download', `aurelia_subscribers_${new Date().toISOString().split('T')[0]}.csv`);
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+          window.showToast('Subscriber list downloaded as CSV!', 'success');
+        });
+
+        // New Booking Modal wiring
+        const bookingModal = document.getElementById('newBookingModal');
+        const openBookingBtn = document.getElementById('btnOpenNewBookingModal');
+        const closeBookingBtn = document.getElementById('btnCloseBookingModal');
+        const cancelBookingBtn = document.getElementById('btnCancelBookingModal');
+        const bookingForm = document.getElementById('newBookingForm');
+        const submitBookingBtn = document.getElementById('btnSubmitNewBooking');
+
+        function openBookingModal() {
+          const today = new Date().toISOString().split('T')[0];
+          document.getElementById('nbDate').value = today;
+          bookingModal.classList.add('open');
+        }
+
+        function closeBookingModal() {
+          bookingModal.classList.remove('open');
+          bookingForm.reset();
+        }
+
+        if (openBookingBtn) openBookingBtn.addEventListener('click', openBookingModal);
+        if (closeBookingBtn) closeBookingBtn.addEventListener('click', closeBookingModal);
+        if (cancelBookingBtn) cancelBookingBtn.addEventListener('click', closeBookingModal);
+        if (bookingModal) {
+          bookingModal.addEventListener('click', (e) => {
+            if (e.target === bookingModal) closeBookingModal();
+          });
+        }
+
+        if (bookingForm) {
+          bookingForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            submitBookingBtn.disabled = true;
+            submitBookingBtn.textContent = 'Booking Table...';
+
+            const newRes = {
+              name: document.getElementById('nbGuestName').value.trim(),
+              email: document.getElementById('nbGuestEmail').value.trim(),
+              reservation_date: document.getElementById('nbDate').value,
+              reservation_time: document.getElementById('nbTime').value,
+              guests: document.getElementById('nbGuests').value,
+              seating_area: document.getElementById('nbSeating').value,
+              experience: document.getElementById('nbExperience').value,
+              notes: document.getElementById('nbNotes').value.trim(),
+              location: 'San Francisco Flagship',
+              status: 'Confirmed'
+            };
+
+            try {
+              const { data, error } = await client
+                .from('reservations')
+                .insert([newRes])
+                .select()
+                .single();
+
+              if (error) throw error;
+
+              window.showToast(`Table confirmed for ${newRes.name}!`, 'success');
+              closeBookingModal();
+              
+              if (data) {
+                allReservations.unshift(data);
+              } else {
+                await fetchReservations(client);
+              }
+              renderReservations(allReservations);
+              document.getElementById('statTotalRes').textContent = allReservations.length;
+              document.getElementById('tabBadgeRes').textContent = allReservations.length;
+              const confirmedCount = allReservations.filter(r => (r.status || '').toLowerCase() === 'confirmed').length;
+              document.getElementById('statConfirmedRes').textContent = `${confirmedCount} confirmed`;
+            } catch (err) {
+              console.error('Error creating manual reservation:', err);
+              window.showToast(err.message || 'Failed to book table.', 'error');
+            } finally {
+              submitBookingBtn.disabled = false;
+              submitBookingBtn.textContent = 'Confirm & Book Table';
+            }
+          });
+        }
+      }
+
+      verifyAdmin();
+    });
+  </script>
+</body>
+</html>
