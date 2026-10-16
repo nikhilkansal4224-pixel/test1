@@ -1246,8 +1246,16 @@
           html += `
             <tr>
               <td>
-                <div style="font-weight: 700;">${g.full_name || 'Guest'}</div>
-                <div style="font-size: 0.8rem; color: var(--text-muted);">${g.email || 'No email'}</div>
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                  ${g.avatar_url 
+                    ? `<img src="${g.avatar_url}" alt="${g.full_name || 'Guest'}" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border-subtle); flex-shrink: 0;">` 
+                    : `<div style="width: 36px; height: 36px; border-radius: 50%; background: var(--brand-primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; flex-shrink: 0;">${(g.full_name || 'G').charAt(0).toUpperCase()}</div>`
+                  }
+                  <div>
+                    <div style="font-weight: 700;">${g.full_name || 'Guest'}</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted);">${g.email || 'No email'}</div>
+                  </div>
+                </div>
               </td>
               <td>${g.phone || '<span style="color: var(--text-muted);">None</span>'}</td>
               <td><span style="font-weight: 600; color: var(--accent-gold);">★ ${g.member_tier || 'Gold Connoisseur'}</span></td>

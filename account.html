@@ -538,7 +538,16 @@
         <section class="account-hero-banner">
           <div class="account-hero-grid">
             <div class="account-profile-summary">
-              <div class="account-avatar-large" id="accHeroAvatar">N</div>
+              <div class="account-avatar-wrapper" id="avatarUploadWrapper" title="Click to upload/change your profile photo">
+                <div class="account-avatar-large" id="accHeroAvatar">N</div>
+                <button type="button" class="avatar-upload-badge" id="btnUploadAvatar" title="Upload profile photo" aria-label="Upload profile photo">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                    <circle cx="12" cy="13" r="4"></circle>
+                  </svg>
+                </button>
+                <input type="file" id="avatarFileInput" accept="image/jpeg,image/png,image/webp,image/gif,image/avif" style="display: none;">
+              </div>
               <div class="account-title-group">
                 <span style="font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent-gold); font-weight: 700;">
                   Aurelia Connoisseur Club
@@ -649,6 +658,44 @@
           </section>
 
         </div>
+
+        <!-- Dining Photos & Experience Gallery (Supabase Storage) -->
+        <section class="account-panel" style="margin-top: 2rem;">
+          <div class="account-panel-header" style="flex-wrap: wrap; gap: 1rem;">
+            <div>
+              <h2 class="account-panel-title">Dining Memories & Photo Gallery</h2>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.2rem;">
+                Upload, store, and preserve photos of your culinary journeys, private celebrations, and wine pairings at Aurelia via Supabase Storage.
+              </p>
+            </div>
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+              <button type="button" class="btn btn-primary btn-sm" id="btnTriggerPhotoUpload" style="display: inline-flex; align-items: center; gap: 0.45rem;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+                <span>Upload Dining Photo</span>
+              </button>
+              <input type="file" id="galleryFileInput" accept="image/jpeg,image/png,image/webp,image/gif,image/avif" style="display: none;">
+            </div>
+          </div>
+
+          <!-- Photo Upload Progress / Status -->
+          <div id="photoUploadStatus" style="display: none; padding: 0.85rem 1.25rem; margin-bottom: 1.25rem; border-radius: var(--radius-sm); background: #f0fdf4; border: 1px solid #bbf7d0; font-size: 0.88rem; color: #166534; align-items: center; gap: 0.65rem;">
+            <div class="auth-spinner" style="width: 16px; height: 16px; border-width: 2px;"></div>
+            <span id="photoUploadStatusText">Uploading to Supabase Storage...</span>
+          </div>
+
+          <!-- Gallery Grid -->
+          <div id="guestGalleryGrid" class="guest-gallery-grid">
+            <div class="gallery-empty-state">
+              <div style="font-size: 2.2rem; margin-bottom: 0.5rem;">📸</div>
+              <p style="font-weight: 600; color: var(--text-primary); margin-bottom: 0.25rem;">No dining photos uploaded yet</p>
+              <p style="font-size: 0.85rem; color: var(--text-muted);">Share your favorite dishes, wine pairings, or moments from your visits.</p>
+            </div>
+          </div>
+        </section>
 
       </div>
 
@@ -850,6 +897,136 @@
             saveBtn.querySelector('span').textContent = 'Save Preferences';
           }
         });
+
+        // Avatar Photo Upload to Supabase Storage
+        const avatarWrapper = document.getElementById('avatarUploadWrapper');
+        const avatarInput = document.getElementById('avatarFileInput');
+        const btnUploadAvatar = document.getElementById('btnUploadAvatar');
+
+        if (avatarWrapper && avatarInput) {
+          const triggerAvatarSelect = () => avatarInput.click();
+          avatarWrapper.addEventListener('click', triggerAvatarSelect);
+          if (btnUploadAvatar) {
+            btnUploadAvatar.addEventListener('click', (e) => {
+              e.stopPropagation();
+              avatarInput.click();
+            });
+          }
+
+          avatarInput.addEventListener('change', async (e) => {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+
+            const avatarEl = document.getElementById('accHeroAvatar');
+            const originalContent = avatarEl.innerHTML;
+            avatarEl.innerHTML = `<div class="avatar-upload-spinner"><div class="auth-spinner" style="width: 20px; height: 20px; border-width: 2px;"></div></div>`;
+
+            try {
+              window.showToast('Uploading profile photo to Supabase Storage...', 'info');
+              const newAvatarUrl = await window.AureliaAuth.updateUserAvatar(file, user.id);
+              avatarEl.innerHTML = `<img src="${newAvatarUrl}" alt="${name}">`;
+              window.showToast('Profile photo updated successfully!', 'success');
+            } catch (err) {
+              console.error('Avatar upload failed:', err);
+              avatarEl.innerHTML = originalContent;
+              window.showToast(err.message || 'Failed to upload photo.', 'error');
+            } finally {
+              avatarInput.value = '';
+            }
+          });
+        }
+
+        // Dining Photos Gallery (Supabase Storage)
+        const btnTriggerPhotoUpload = document.getElementById('btnTriggerPhotoUpload');
+        const galleryFileInput = document.getElementById('galleryFileInput');
+        const photoUploadStatus = document.getElementById('photoUploadStatus');
+        const photoUploadStatusText = document.getElementById('photoUploadStatusText');
+        const galleryGrid = document.getElementById('guestGalleryGrid');
+
+        async function loadGalleryPhotos() {
+          try {
+            const photos = await window.AureliaAuth.fetchGuestPhotos(user.id);
+            renderGallery(photos);
+          } catch (err) {
+            console.error('Error loading gallery photos:', err);
+          }
+        }
+
+        function renderGallery(photos) {
+          if (!photos || photos.length === 0) {
+            galleryGrid.innerHTML = `
+              <div class="gallery-empty-state">
+                <div style="font-size: 2.2rem; margin-bottom: 0.5rem;">📸</div>
+                <p style="font-weight: 600; color: var(--text-primary); margin-bottom: 0.25rem;">No dining photos uploaded yet</p>
+                <p style="font-size: 0.85rem; color: var(--text-muted);">Share your favorite dishes, wine pairings, or moments from your visits.</p>
+              </div>
+            `;
+            return;
+          }
+
+          let html = '';
+          photos.forEach(photo => {
+            const dateStr = photo.created_at ? new Date(photo.created_at).toLocaleDateString() : '';
+            html += `
+              <div class="gallery-photo-card" id="photoCard-${photo.id}">
+                <img src="${photo.photo_url}" alt="${photo.caption || 'Dining Photo'}" loading="lazy">
+                <div class="gallery-photo-overlay">
+                  <button type="button" class="gallery-delete-btn" onclick="deleteGuestPhotoItem('${photo.id}', '${photo.photo_url}')" title="Delete Photo">🗑 Remove</button>
+                  <div>
+                    ${photo.caption ? `<div class="gallery-photo-caption">${photo.caption}</div>` : ''}
+                    <div class="gallery-photo-date">${dateStr}</div>
+                  </div>
+                </div>
+              </div>
+            `;
+          });
+          galleryGrid.innerHTML = html;
+        }
+
+        window.deleteGuestPhotoItem = async function (photoId, photoUrl) {
+          if (!confirm('Are you sure you wish to delete this photo from your dining gallery?')) return;
+          try {
+            await window.AureliaAuth.deleteGuestPhoto(photoId, photoUrl);
+            window.showToast('Photo removed from your gallery.', 'info');
+            const card = document.getElementById(`photoCard-${photoId}`);
+            if (card) card.remove();
+            const remaining = galleryGrid.querySelectorAll('.gallery-photo-card');
+            if (remaining.length === 0) renderGallery([]);
+          } catch (err) {
+            console.error('Delete photo error:', err);
+            window.showToast(err.message || 'Failed to delete photo.', 'error');
+          }
+        };
+
+        if (btnTriggerPhotoUpload && galleryFileInput) {
+          btnTriggerPhotoUpload.addEventListener('click', () => galleryFileInput.click());
+          galleryFileInput.addEventListener('change', async (e) => {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+
+            const caption = prompt('Add an optional caption for this dining photo (e.g. "Tasting Menu Course 3", "Anniversary Champagne"):', '') || '';
+
+            photoUploadStatus.style.display = 'flex';
+            photoUploadStatusText.textContent = `Uploading ${file.name} to Supabase Storage...`;
+            btnTriggerPhotoUpload.disabled = true;
+
+            try {
+              await window.AureliaAuth.uploadGuestPhoto(file, caption, user.id);
+              window.showToast('Photo uploaded to your gallery successfully!', 'success');
+              await loadGalleryPhotos();
+            } catch (err) {
+              console.error('Gallery photo upload error:', err);
+              window.showToast(err.message || 'Could not upload photo.', 'error');
+            } finally {
+              photoUploadStatus.style.display = 'none';
+              btnTriggerPhotoUpload.disabled = false;
+              galleryFileInput.value = '';
+            }
+          });
+        }
+
+        // Initial load of guest photos
+        await loadGalleryPhotos();
 
         // Sign Out Button
         document.getElementById('accSignOutBtn').addEventListener('click', async () => {
