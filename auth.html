@@ -350,13 +350,13 @@
         <!-- Already Signed In Card (shown if user is currently signed in) -->
         <div id="pageAlreadySignedInCard" style="display: none; text-align: center; padding: 1.5rem 0;">
           <div class="auth-icon-badge" style="font-size: 2.5rem; margin-bottom: 0.75rem;">🥂</div>
-          <h3 style="font-family: var(--font-serif); margin-bottom: 0.5rem;">You Are Signed In</h3>
+          <h3 style="font-family: var(--font-serif); margin-bottom: 0.5rem;">Welcome to Aurelia</h3>
           <p style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 1.5rem;">
-            Currently logged in as <strong id="pageSignedInEmail">user@example.com</strong>
+            Currently signed in as <strong id="pageSignedInEmail">user@example.com</strong>
           </p>
           <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
-            <a href="reservation.html" class="btn btn-primary btn-sm">Make a Reservation</a>
-            <button type="button" class="btn btn-secondary btn-sm" id="pageViewReservationsBtn">View My Bookings</button>
+            <a href="account.html" class="btn btn-primary btn-sm">Enter VIP Guest Portal</a>
+            <a href="reservation.html" class="btn btn-secondary btn-sm">Make a Reservation</a>
             <button type="button" class="btn btn-outline btn-sm" id="pageSignOutBtn">Sign Out</button>
           </div>
         </div>
@@ -455,7 +455,7 @@
 
       // Check URL parameters for redirect or errors
       const urlParams = new URLSearchParams(window.location.search);
-      const redirectTo = urlParams.get('redirect') || 'index.html';
+      const redirectTo = urlParams.get('redirect') || 'account.html';
 
       // Tab switcher
       tabMagicBtn.addEventListener('click', () => {

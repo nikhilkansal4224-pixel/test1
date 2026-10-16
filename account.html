@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VIP Guest Portal & Dining Profile — AURELIA Bistro & Lounge</title>
+  <meta name="description" content="Manage your Aurelia dining reservations, curated tasting preferences, and member privileges.">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Dedicated Account Dashboard Styles */
+    .account-page-wrapper {
+      background-color: var(--bg-primary);
+      min-height: calc(100vh - 120px);
+      padding: 3rem 0 6rem 0;
+    }
+
+    .account-hero-banner {
+      background-color: var(--brand-secondary);
+      color: var(--text-inverted);
+      border-radius: var(--radius-md);
+      padding: 2.75rem 2.5rem;
+      margin-bottom: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .account-hero-banner::after {
+      content: '';
+      position: absolute;
+      top: -50px;
+      right: -50px;
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, rgba(184, 142, 68, 0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .account-hero-grid {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .account-profile-summary {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .account-avatar-large {
+      width: 76px;
+      height: 76px;
+      border-radius: var(--radius-full);
+      background-color: var(--accent-gold);
+      color: var(--text-inverted);
+      font-size: 2rem;
+      font-weight: 700;
+      font-family: var(--font-serif);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      border: 3px solid rgba(255, 255, 255, 0.2);
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .account-avatar-large img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .account-title-group h1 {
+      font-family: var(--font-serif);
+      font-size: 2.2rem;
+      color: var(--text-inverted);
+      margin-bottom: 0.25rem;
+    }
+
+    .account-email-sub {
+      color: #D1DDD1;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .tier-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background-color: var(--accent-gold);
+      color: var(--text-inverted);
+      padding: 0.2rem 0.65rem;
+      border-radius: var(--radius-full);
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .account-hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .account-stat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .account-stat-card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 1.5rem 1.75rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .account-stat-label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 0.35rem;
+    }
+
+    .account-stat-value {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--brand-primary);
+    }
+
+    .account-stat-desc {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      margin-top: 0.25rem;
+    }
+
+    .account-main-grid {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 2rem;
+    }
+
+    .account-panel {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-md);
+      padding: 2.25rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .account-panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.75rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .account-panel-title {
+      font-family: var(--font-serif);
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .panel-badge-count {
+      background-color: var(--bg-primary);
+      color: var(--brand-primary);
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 0.25rem 0.65rem;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--border-subtle);
+    }
+
+    /* Reservations List in Dashboard */
+    .dashboard-res-card {
+      background-color: var(--bg-primary);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+      transition: all var(--transition-fast);
+    }
+
+    .dashboard-res-card:hover {
+      border-color: var(--brand-primary);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .dashboard-res-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .res-date-chip {
+      font-family: var(--font-sans);
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--text-primary);
+    }
+
+    .dashboard-res-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+    }
+
+    .dashboard-res-details span strong {
+      color: var(--text-primary);
+    }
+
+    .dashboard-res-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 0.75rem;
+      border-top: 1px dashed var(--border-subtle);
+    }
+
+    .ref-code {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-family: monospace;
+    }
+
+    .btn-cancel-res {
+      background: none;
+      border: none;
+      color: #c92a2a;
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: underline;
+      padding: 0;
+    }
+
+    .btn-cancel-res:hover {
+      color: #a51d24;
+    }
+
+    /* Preferences Form */
+    .pref-group {
+      margin-bottom: 1.35rem;
+    }
+
+    .pref-label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--text-primary);
+      margin-bottom: 0.4rem;
+    }
+
+    .pref-select, .pref-input, .pref-textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      background-color: var(--bg-surface);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 0.92rem;
+      transition: border-color var(--transition-fast);
+    }
+
+    .pref-select:focus, .pref-input:focus, .pref-textarea:focus {
+      outline: none;
+      border-color: var(--brand-primary);
+      box-shadow: 0 0 0 3px rgba(140, 74, 47, 0.12);
+    }
+
+    .pref-hint {
+      display: block;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+
+    /* Empty state */
+    .dashboard-empty-res {
+      text-align: center;
+      padding: 3rem 1.5rem;
+      background-color: var(--bg-primary);
+      border: 1px dashed var(--border-card);
+      border-radius: var(--radius-sm);
+    }
+
+    .dashboard-empty-res .icon {
+      font-size: 2.75rem;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Unauthorized State */
+    .unauth-card {
+      text-align: center;
+      padding: 5rem 2rem;
+      max-width: 550px;
+      margin: 0 auto;
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-md);
+    }
+
+    @media (max-width: 900px) {
+      .account-main-grid {
+        grid-template-columns: 1fr;
+      }
+      .account-stat-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Announcement Bar -->
+  <div class="top-banner">
+    Reservations now open for our Spring Harvest Tasting Experience • <a href="reservation.html" style="color: inherit; text-decoration: underline;">Reserve Today</a>
+  </div>
+
+  <!-- Header / Navigation -->
+  <header class="site-header">
+    <div class="container header-container">
+      <a href="index.html" class="logo-brand">
+        <span class="brand-title">AURELIA</span>
+        <span class="brand-subtitle">BISTRO & LOUNGE</span>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="menu.html" class="nav-link">Menu</a></li>
+          <li><a href="about.html" class="nav-link">Our Story</a></li>
+          <li><a href="reservation.html" class="nav-link">Reservations</a></li>
+          <li><a href="contact.html" class="nav-link">Contact & Hours</a></li>
+          <li><a href="account.html" class="nav-link active">Account</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <a href="tel:+14155550198" style="font-size: 0.9rem; font-weight: 600; color: var(--text-secondary); margin-right: 0.5rem;">(415) 555-0198</a>
+        <a href="reservation.html" class="btn btn-primary btn-sm">Book a Table</a>
+        <button class="mobile-toggle" aria-label="Toggle navigation menu">&#9776;</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="account-page-wrapper">
+    <div class="container">
+
+      <!-- Loading State -->
+      <div id="accountLoadingState" style="text-align: center; padding: 6rem 1rem;">
+        <div class="auth-spinner"></div>
+        <h3 style="font-family: var(--font-serif); margin-top: 1rem; color: var(--text-primary);">Loading your VIP profile...</h3>
+      </div>
+
+      <!-- Unauthorized State (if guest visits directly without logging in) -->
+      <div id="accountUnauthState" class="unauth-card" style="display: none;">
+        <div style="font-size: 3rem; margin-bottom: 0.75rem;">🔒</div>
+        <h2 style="font-family: var(--font-serif); font-size: 1.8rem; margin-bottom: 0.5rem;">Guest Authentication Required</h2>
+        <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1.75rem; line-height: 1.5;">
+          Please sign in to access your personal dining reservations, sommelier notes, and Aurelia Connoisseur Club privileges.
+        </p>
+        <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
+          <a href="auth.html?redirect=account.html" class="btn btn-primary">Sign In / Register</a>
+          <a href="index.html" class="btn btn-secondary">Return to Home</a>
+        </div>
+      </div>
+
+      <!-- Authenticated Content Dashboard -->
+      <div id="accountContentState" style="display: none;">
+
+        <!-- VIP Hero Banner -->
+        <section class="account-hero-banner">
+          <div class="account-hero-grid">
+            <div class="account-profile-summary">
+              <div class="account-avatar-large" id="accHeroAvatar">N</div>
+              <div class="account-title-group">
+                <span style="font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent-gold); font-weight: 700;">
+                  Aurelia Connoisseur Club
+                </span>
+                <h1 id="accHeroGreeting">Good evening, Nikhil</h1>
+                <div class="account-email-sub">
+                  <span id="accHeroEmail">nikhilkansal4224@gmail.com</span>
+                  <span class="tier-badge" id="accHeroTier">★ Gold Connoisseur</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="account-hero-actions">
+              <a href="reservation.html" class="btn btn-primary btn-sm">Reserve a Table</a>
+              <button type="button" class="btn btn-outline btn-sm" id="accSignOutBtn" style="border-color: rgba(255,255,255,0.4); color: white;">
+                Sign Out
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Quick Stats -->
+        <section class="account-stat-grid">
+          <div class="account-stat-card">
+            <div class="account-stat-label">Table Reservations</div>
+            <div class="account-stat-value" id="statReservationCount">0</div>
+            <div class="account-stat-desc">Bookings on file at Aurelia</div>
+          </div>
+          <div class="account-stat-card">
+            <div class="account-stat-label">Membership Tier</div>
+            <div class="account-stat-value" style="color: var(--accent-gold);" id="statMemberTier">Gold</div>
+            <div class="account-stat-desc">Priority seating & sommelier pairings</div>
+          </div>
+          <div class="account-stat-card">
+            <div class="account-stat-label">Preferred Seating</div>
+            <div class="account-stat-value" style="font-size: 1.4rem; line-height: 1.3;" id="statSeating">Indoor Dining</div>
+            <div class="account-stat-desc">Auto-filled on your reservations</div>
+          </div>
+        </section>
+
+        <!-- Main Dashboard 2-Column Grid -->
+        <div class="account-main-grid">
+          
+          <!-- Column 1: Live Reservations Manager -->
+          <section class="account-panel">
+            <div class="account-panel-header">
+              <h2 class="account-panel-title">Your Reservations</h2>
+              <span class="panel-badge-count" id="resBadgeCount">0 Active</span>
+            </div>
+
+            <div id="accountReservationsList">
+              <!-- Dynamically populated from Supabase -->
+            </div>
+
+            <div style="margin-top: 1.5rem; text-align: center; padding-top: 1.25rem; border-top: 1px solid var(--border-subtle);">
+              <a href="reservation.html" class="btn btn-primary btn-sm">Make a New Table Reservation</a>
+            </div>
+          </section>
+
+          <!-- Column 2: Dining Preferences & Profile -->
+          <section class="account-panel">
+            <div class="account-panel-header">
+              <h2 class="account-panel-title">Dining Preferences</h2>
+              <span style="font-size: 0.8rem; color: var(--text-muted);">Saved to profile</span>
+            </div>
+
+            <form id="preferencesForm">
+              <div class="pref-group">
+                <label class="pref-label" for="prefFullName">Full Name</label>
+                <input type="text" id="prefFullName" class="pref-input" placeholder="Your name">
+              </div>
+
+              <div class="pref-group">
+                <label class="pref-label" for="prefPhone">Phone Number</label>
+                <input type="tel" id="prefPhone" class="pref-input" placeholder="(415) 555-0198">
+                <span class="pref-hint">Used by our maître d' for table confirmation SMS.</span>
+              </div>
+
+              <div class="pref-group">
+                <label class="pref-label" for="prefSeating">Preferred Seating Area</label>
+                <select id="prefSeating" class="pref-select">
+                  <option value="Indoor Dining">Main Dining Salon</option>
+                  <option value="Patio Garden">Olive Tree Garden Patio</option>
+                  <option value="Chef Counter">Chef's Tasting Counter</option>
+                  <option value="Cellar Alcove">Wine Cellar Private Alcove</option>
+                </select>
+              </div>
+
+              <div class="pref-group">
+                <label class="pref-label" for="prefDietary">Dietary Restrictions & Allergies</label>
+                <input type="text" id="prefDietary" class="pref-input" placeholder="e.g. Vegetarian, Truffle pairing, No shellfish">
+                <span class="pref-hint">Our executive chef notes this before your party arrives.</span>
+              </div>
+
+              <div class="pref-group">
+                <label class="pref-label" for="prefNotes">Special Occasions & Notes</label>
+                <textarea id="prefNotes" class="pref-textarea" rows="3" placeholder="Anniversary celebrations, preferred wine vintages, quiet booth..."></textarea>
+              </div>
+
+              <button type="submit" id="savePrefBtn" class="btn btn-primary btn-block">
+                <span>Save Preferences</span>
+              </button>
+            </form>
+          </section>
+
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-column">
+        <div class="logo-brand" style="margin-bottom: 1rem;">
+          <span class="brand-title">AURELIA</span>
+          <span class="brand-subtitle">BISTRO & LOUNGE</span>
+        </div>
+        <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
+          Modern seasonal cuisine honoring local farmers, coastal fisheries, and artisanal vineyards.
+        </p>
+      </div>
+
+      <div class="footer-column">
+        <h4>Navigation</h4>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="menu.html">Seasonal Menu</a></li>
+          <li><a href="about.html">Our Story & Team</a></li>
+          <li><a href="reservation.html">Table Reservations</a></li>
+          <li><a href="contact.html">Hours & Location</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Hours of Service</h4>
+        <ul class="footer-hours-list">
+          <li><strong>Tue – Thu</strong> 5:00 PM – 10:00 PM</li>
+          <li><strong>Fri – Sat</strong> 5:00 PM – 11:00 PM</li>
+          <li><strong>Sunday</strong> 4:30 PM – 9:30 PM</li>
+          <li><strong>Monday</strong> Closed</li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Contact</h4>
+        <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
+          450 Montgomery St, San Francisco, CA
+        </p>
+        <p style="font-size: 0.9rem; color: var(--text-secondary);">
+          Direct: (415) 555-0198
+        </p>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="footer-bottom">
+        <div>&copy; 2026 Aurelia Bistro & Lounge. All rights reserved.</div>
+        <div style="display: flex; gap: 1.5rem;">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Accessibility</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/main.js"></script>
+
+  <script>
+    // Account Dashboard Logic
+    document.addEventListener('DOMContentLoaded', async () => {
+      const loadingState = document.getElementById('accountLoadingState');
+      const unauthState = document.getElementById('accountUnauthState');
+      const contentState = document.getElementById('accountContentState');
+
+      // Wait for auth initialization
+      async function checkUserSession() {
+        const client = window.getSupabaseClient ? window.getSupabaseClient() : null;
+        if (!client) {
+          setTimeout(checkUserSession, 150);
+          return;
+        }
+
+        const { data: { session } } = await client.auth.getSession();
+        if (!session || !session.user) {
+          loadingState.style.display = 'none';
+          unauthState.style.display = 'block';
+          contentState.style.display = 'none';
+          return;
+        }
+
+        renderDashboard(session.user);
+      }
+
+      async function renderDashboard(user) {
+        loadingState.style.display = 'none';
+        unauthState.style.display = 'none';
+        contentState.style.display = 'block';
+
+        const client = window.getSupabaseClient();
+        const email = user.email || '';
+        const name = user.user_metadata?.full_name || user.user_metadata?.name || email.split('@')[0];
+        const avatarUrl = user.user_metadata?.avatar_url || user.user_metadata?.picture || '';
+        const initial = (name.charAt(0) || 'G').toUpperCase();
+
+        // Time-aware greeting
+        const hour = new Date().getHours();
+        const timeGreeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+        document.getElementById('accHeroGreeting').textContent = `${timeGreeting}, ${name}`;
+        document.getElementById('accHeroEmail').textContent = email;
+
+        // Avatar
+        const avatarEl = document.getElementById('accHeroAvatar');
+        if (avatarUrl) {
+          avatarEl.innerHTML = `<img src="${avatarUrl}" alt="${name}">`;
+        } else {
+          avatarEl.textContent = initial;
+        }
+
+        // Fetch User Profile from public.profiles
+        try {
+          const { data: profile } = await client
+            .from('profiles')
+            .select('*')
+            .eq('id', user.id)
+            .single();
+
+          if (profile) {
+            document.getElementById('prefFullName').value = profile.full_name || name;
+            document.getElementById('prefPhone').value = profile.phone || '';
+            if (profile.preferred_seating) {
+              document.getElementById('prefSeating').value = profile.preferred_seating;
+              document.getElementById('statSeating').textContent = profile.preferred_seating;
+            }
+            document.getElementById('prefDietary').value = profile.dietary_notes || '';
+            document.getElementById('prefNotes').value = profile.special_requests || '';
+
+            if (profile.member_tier) {
+              document.getElementById('accHeroTier').textContent = `★ ${profile.member_tier}`;
+              document.getElementById('statMemberTier').textContent = profile.member_tier.replace(' Connoisseur', '');
+            }
+          } else {
+            document.getElementById('prefFullName').value = name;
+          }
+        } catch (err) {
+          console.warn('Could not load profile record:', err);
+        }
+
+        // Load User Reservations from public.reservations
+        await loadReservations(client, user);
+
+        // Handle Preferences Form Save
+        const prefForm = document.getElementById('preferencesForm');
+        const saveBtn = document.getElementById('savePrefBtn');
+
+        prefForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          saveBtn.disabled = true;
+          saveBtn.querySelector('span').textContent = 'Saving to Aurelia...';
+
+          const updates = {
+            id: user.id,
+            email: email,
+            full_name: document.getElementById('prefFullName').value.trim(),
+            phone: document.getElementById('prefPhone').value.trim(),
+            preferred_seating: document.getElementById('prefSeating').value,
+            dietary_notes: document.getElementById('prefDietary').value.trim(),
+            special_requests: document.getElementById('prefNotes').value.trim(),
+            updated_at: new Date().toISOString()
+          };
+
+          try {
+            const { error } = await client
+              .from('profiles')
+              .upsert(updates);
+
+            if (error) throw error;
+            document.getElementById('statSeating').textContent = updates.preferred_seating;
+            window.showToast('Your dining preferences have been updated!', 'success');
+          } catch (err) {
+            console.error('Error saving profile preferences:', err);
+            window.showToast(err.message || 'Could not save preferences.', 'error');
+          } finally {
+            saveBtn.disabled = false;
+            saveBtn.querySelector('span').textContent = 'Save Preferences';
+          }
+        });
+
+        // Sign Out Button
+        document.getElementById('accSignOutBtn').addEventListener('click', async () => {
+          await window.AureliaAuth.signOut();
+          window.location.href = 'index.html';
+        });
+      }
+
+      async function loadReservations(client, user) {
+        const container = document.getElementById('accountReservationsList');
+        const countBadge = document.getElementById('resBadgeCount');
+        const statCount = document.getElementById('statReservationCount');
+
+        try {
+          // Query by email OR user_id
+          const { data: reservations, error } = await client
+            .from('reservations')
+            .select('*')
+            .or(`email.ilike.${user.email},user_id.eq.${user.id}`)
+            .order('created_at', { ascending: false });
+
+          if (error) throw error;
+
+          const total = reservations ? reservations.length : 0;
+          statCount.textContent = total;
+          countBadge.textContent = `${total} Total`;
+
+          if (!reservations || reservations.length === 0) {
+            container.innerHTML = `
+              <div class="dashboard-empty-res">
+                <div class="icon">🍽</div>
+                <h4 style="font-family: var(--font-serif); margin-bottom: 0.35rem;">No Active Bookings</h4>
+                <p style="color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 1rem;">
+                  You have not reserved a table yet with this account.
+                </p>
+                <a href="reservation.html" class="btn btn-primary btn-sm">Reserve Your First Table</a>
+              </div>
+            `;
+            return;
+          }
+
+          let html = '';
+          reservations.forEach(res => {
+            const date = res.reservation_date || 'Upcoming';
+            const time = res.reservation_time || '7:00 PM';
+            const guests = res.guests || '2 Guests';
+            const seating = res.seating_area || 'Indoor Dining';
+            const status = res.status || 'Confirmed';
+            const isConfirmed = status.toLowerCase() === 'confirmed';
+
+            html += `
+              <div class="dashboard-res-card" id="resCard-${res.id}">
+                <div class="dashboard-res-header">
+                  <div class="res-date-chip">${date} • ${time}</div>
+                  <span class="res-card-badge status-${status.toLowerCase()}">${status}</span>
+                </div>
+                <div class="dashboard-res-details">
+                  <span>Party: <strong>${guests}</strong></span>
+                  <span>Seating: <strong>${seating}</strong></span>
+                  <span>Experience: <strong>${res.experience || 'A La Carte'}</strong></span>
+                  <span>Guest: <strong>${res.name || 'Valued Guest'}</strong></span>
+                </div>
+                ${res.notes ? `<div style="font-size: 0.82rem; color: var(--text-muted); font-style: italic; margin-bottom: 0.65rem;">"${res.notes}"</div>` : ''}
+                <div class="dashboard-res-actions">
+                  <span class="ref-code">Ref: #${res.id.substring(0, 8).toUpperCase()}</span>
+                  ${isConfirmed ? `
+                    <button type="button" class="btn-cancel-res" onclick="cancelBooking('${res.id}')">
+                      Cancel Reservation
+                    </button>
+                  ` : ''}
+                </div>
+              </div>
+            `;
+          });
+
+          container.innerHTML = html;
+        } catch (err) {
+          console.error('Error loading reservations:', err);
+          container.innerHTML = `<p style="color: var(--warning); padding: 1rem 0;">Could not load reservations at this time.</p>`;
+        }
+      }
+
+      // Global cancel booking handler
+      window.cancelBooking = async function (id) {
+        if (!confirm('Are you sure you wish to cancel this dining reservation?')) return;
+        const client = window.getSupabaseClient();
+        try {
+          const { error } = await client
+            .from('reservations')
+            .update({ status: 'Cancelled' })
+            .eq('id', id);
+
+          if (error) throw error;
+          window.showToast('Reservation has been cancelled.', 'info');
+          // Update card UI
+          const card = document.getElementById(`resCard-${id}`);
+          if (card) {
+            const badge = card.querySelector('.res-card-badge');
+            if (badge) {
+              badge.className = 'res-card-badge status-cancelled';
+              badge.textContent = 'Cancelled';
+            }
+            const cancelBtn = card.querySelector('.btn-cancel-res');
+            if (cancelBtn) cancelBtn.remove();
+          }
+        } catch (err) {
+          console.error('Cancel booking error:', err);
+          window.showToast(err.message || 'Could not cancel reservation.', 'error');
+        }
+      };
+
+      checkUserSession();
+    });
+  </script>
+</body>
+</html>

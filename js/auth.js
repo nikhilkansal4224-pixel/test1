@@ -835,30 +835,44 @@
     if (window.AureliaAuth.user) {
       const user = window.AureliaAuth.user;
       const email = user.email || 'guest';
-      const name = user.user_metadata?.full_name || email.split('@')[0];
+      const name = user.user_metadata?.full_name || user.user_metadata?.name || email.split('@')[0];
+      const avatarUrl = user.user_metadata?.avatar_url || user.user_metadata?.picture || '';
       const initial = (name.charAt(0) || email.charAt(0) || 'U').toUpperCase();
+      const displayName = name.length > 14 ? name.substring(0, 12) + '...' : name;
+
+      const avatarMarkup = avatarUrl 
+        ? `<img src="${avatarUrl}" alt="${name}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">` 
+        : initial;
+
+      const avatarLargeMarkup = avatarUrl
+        ? `<img src="${avatarUrl}" alt="${name}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">` 
+        : initial;
 
       const userMenu = document.createElement('div');
       userMenu.className = 'user-profile-menu';
       userMenu.id = 'userProfileMenu';
       userMenu.innerHTML = `
         <button class="user-avatar-btn" id="userAvatarBtn" aria-label="Open User Menu" aria-expanded="false">
-          <span class="user-avatar-initial">${initial}</span>
-          <span class="user-display-email">${email.length > 18 ? email.substring(0, 16) + '...' : email}</span>
+          <span class="user-avatar-initial" style="overflow: hidden;">${avatarMarkup}</span>
+          <span class="user-display-email" style="font-weight: 700;">${displayName}</span>
           <svg class="chevron-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
         </button>
 
         <div class="user-dropdown-card" id="userDropdownCard" style="display: none;">
           <div class="user-dropdown-header">
-            <div class="user-avatar-large">${initial}</div>
+            <div class="user-avatar-large" style="overflow: hidden;">${avatarLargeMarkup}</div>
             <div class="user-details">
               <strong class="user-dropdown-name">${name}</strong>
               <span class="user-dropdown-email">${email}</span>
-              <span class="user-badge-status">✓ Authenticated Member</span>
+              <span class="user-badge-status">★ Gold Connoisseur</span>
             </div>
           </div>
           <div class="user-dropdown-divider"></div>
           <div class="user-dropdown-links">
+            <a href="account.html" class="user-dropdown-link" id="navMyAccountBtn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              <span>VIP Account & Preferences</span>
+            </a>
             <button type="button" class="user-dropdown-link" id="navMyReservationsBtn">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
               <span>My Reservations</span>
@@ -1017,6 +1031,7 @@
 
           if (email) {
             await supabase.from('reservations').insert([{
+              user_id: window.AureliaAuth.user?.id || null,
               name: name,
               email: email,
               location: 'San Francisco Flagship',
@@ -1051,17 +1066,30 @@
         window.AureliaAuth.user = session.user;
       }
 
-      // Listen for auth state changes (Magic link redirects, sign-in, sign-out)
+      // Listen for auth state changes (Google OAuth, Magic link, sign-in, sign-out)
       supabase.auth.onAuthStateChange((event, session) => {
         window.AureliaAuth.session = session;
         window.AureliaAuth.user = session ? session.user : null;
         updateHeaderUI();
 
-        if (event === 'SIGNED_IN') {
+        if (event === 'SIGNED_IN' && session?.user) {
           closeModal();
-          // Clear hash if magic link tokens were in URL
-          if (window.location.hash && window.location.hash.includes('access_token')) {
+          const name = session.user.user_metadata?.full_name || session.user.user_metadata?.name || session.user.email?.split('@')[0] || 'Guest';
+          showAuthToast(`Welcome, ${name}! You are now signed in.`, 'success');
+          
+          // Clear hash if magic link or OAuth tokens were in URL
+          if (window.location.hash && (window.location.hash.includes('access_token') || window.location.hash.includes('type='))) {
             history.replaceState(null, '', window.location.pathname + window.location.search);
+          }
+
+          // If on auth page, redirect to account dashboard
+          const currentPath = window.location.pathname;
+          if (currentPath.endsWith('auth.html') || currentPath.endsWith('/auth')) {
+            const params = new URLSearchParams(window.location.search);
+            const targetRedirect = params.get('redirect') || 'account.html';
+            setTimeout(() => {
+              window.location.href = targetRedirect;
+            }, 700);
           }
         }
       });
