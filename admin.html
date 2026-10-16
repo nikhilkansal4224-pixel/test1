@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Executive Console — AURELIA Bistro & Lounge</title>
-  <meta name="description" content="Aurelia Bistro & Lounge administrative management console for reservations, guest directory, inquiries, and subscriptions.">
+  <meta name="description"
+    content="Aurelia Bistro & Lounge administrative management console for reservations, guest directory, inquiries, and subscriptions.">
   <link rel="stylesheet" href="css/style.css">
   <style>
     /* Admin Specific Styling */
@@ -70,9 +72,20 @@
     }
 
     @keyframes pulse {
-      0% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.85); }
-      100% { opacity: 1; transform: scale(1); }
+      0% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.4;
+        transform: scale(0.85);
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
     }
 
     /* Admin Stat Grid */
@@ -278,7 +291,8 @@
       border: 1px solid #b7eb8f;
     }
 
-    .status-seated, .status-completed {
+    .status-seated,
+    .status-completed {
       background-color: #E6F7FF;
       color: #096DD9;
       border: 1px solid #91D5FF;
@@ -348,110 +362,130 @@
       .admin-stats-grid {
         grid-template-columns: 1fr;
       }
+    }
+
     /* Modal styles */
-    .admin-modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(4px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      padding: 1.5rem;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.2s ease;
-    }
-    .admin-modal-overlay.open {
-      opacity: 1;
-      pointer-events: auto;
-    }
-    .admin-modal-card {
-      background: var(--bg-surface);
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border-card);
-      box-shadow: var(--shadow-lg);
-      max-width: 580px;
-      width: 100%;
-      max-height: 90vh;
-      overflow-y: auto;
-      padding: 2.25rem;
-      position: relative;
-    }
-    .admin-modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 1.5rem;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid var(--border-subtle);
-    }
-    .admin-modal-title {
-      font-family: var(--font-serif);
-      font-size: 1.6rem;
-      color: var(--text-primary);
-      margin: 0;
-    }
-    .admin-modal-close {
-      background: none;
-      border: none;
-      font-size: 1.6rem;
-      cursor: pointer;
-      color: var(--text-muted);
-      line-height: 1;
-      padding: 0.25rem;
-    }
-    .admin-modal-close:hover {
-      color: var(--text-primary);
-    }
-    .admin-form-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-      margin-bottom: 0.5rem;
-    }
-    .admin-form-group {
-      margin-bottom: 1rem;
-    }
-    .admin-form-group.full {
-      grid-column: span 2;
-    }
-    .admin-form-label {
-      display: block;
-      font-size: 0.82rem;
-      font-weight: 700;
-      color: var(--text-secondary);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 0.35rem;
-    }
-    .admin-form-input, .admin-form-select, .admin-form-textarea {
-      width: 100%;
-      padding: 0.65rem 0.85rem;
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-sm);
-      font-family: var(--font-sans);
-      font-size: 0.9rem;
-      background: var(--bg-primary);
-      color: var(--text-primary);
-      box-sizing: border-box;
-    }
-    .admin-form-input:focus, .admin-form-select:focus, .admin-form-textarea:focus {
-      outline: none;
-      border-color: var(--brand-primary);
-      box-shadow: 0 0 0 3px rgba(140, 74, 47, 0.12);
-    }
+      .admin-modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(4px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        padding: 1.5rem;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease;
+      }
+
+      .admin-modal-overlay.open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .admin-modal-card {
+        background: var(--bg-surface);
+        border-radius: var(--radius-md);
+        border: 1px solid var(--border-card);
+        box-shadow: var(--shadow-lg);
+        max-width: 580px;
+        width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
+        padding: 2.25rem;
+        position: relative;
+      }
+
+      .admin-modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border-subtle);
+      }
+
+      .admin-modal-title {
+        font-family: var(--font-serif);
+        font-size: 1.6rem;
+        color: var(--text-primary);
+        margin: 0;
+      }
+
+      .admin-modal-close {
+        background: none;
+        border: none;
+        font-size: 1.6rem;
+        cursor: pointer;
+        color: var(--text-muted);
+        line-height: 1;
+        padding: 0.25rem;
+      }
+
+      .admin-modal-close:hover {
+        color: var(--text-primary);
+      }
+
+      .admin-form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .admin-form-group {
+        margin-bottom: 1rem;
+      }
+
+      .admin-form-group.full {
+        grid-column: span 2;
+      }
+
+      .admin-form-label {
+        display: block;
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 0.35rem;
+      }
+
+      .admin-form-input,
+      .admin-form-select,
+      .admin-form-textarea {
+        width: 100%;
+        padding: 0.65rem 0.85rem;
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--radius-sm);
+        font-family: var(--font-sans);
+        font-size: 0.9rem;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        box-sizing: border-box;
+      }
+
+      .admin-form-input:focus,
+      .admin-form-select:focus,
+      .admin-form-textarea:focus {
+        outline: none;
+        border-color: var(--brand-primary);
+        box-shadow: 0 0 0 3px rgba(140, 74, 47, 0.12);
+      }
   </style>
 </head>
+
 <body>
 
   <!-- Top Announcement Bar -->
   <div class="top-banner">
-    Aurelia Executive Console • Authorized Personnel Only • <a href="index.html" style="color: inherit; text-decoration: underline;">Return to Guest Website</a>
+    Aurelia Executive Console • Authorized Personnel Only • <a href="index.html"
+      style="color: inherit; text-decoration: underline;">Return to Guest Website</a>
   </div>
 
   <!-- Header / Navigation -->
@@ -468,7 +502,8 @@
           <li><a href="menu.html" class="nav-link">Menu</a></li>
           <li><a href="reservation.html" class="nav-link">Reservations</a></li>
           <li><a href="account.html" class="nav-link">Guest Portal</a></li>
-          <li><a href="admin.html" class="nav-link active" style="color: var(--brand-primary); font-weight: 700;">Admin Console</a></li>
+          <li><a href="admin.html" class="nav-link active" style="color: var(--brand-primary); font-weight: 700;">Admin
+              Console</a></li>
         </ul>
       </nav>
 
@@ -495,9 +530,10 @@
       <div id="adminAccessDenied" class="access-denied-box" style="display: none;">
         <div style="font-size: 3.5rem; margin-bottom: 1rem;">🛡️</div>
         <span class="admin-title-badge" style="color: #c92a2a;">Access Restricted</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2rem; margin-bottom: 0.75rem;">Administrator Authorization Required</h2>
+        <h2 style="font-family: var(--font-serif); font-size: 2rem; margin-bottom: 0.75rem;">Administrator Authorization
+          Required</h2>
         <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; margin-bottom: 2rem;">
-          This console is reserved exclusively for restaurant management, maître d', and authorized administrators. 
+          This console is reserved exclusively for restaurant management, maître d', and authorized administrators.
           Your signed-in account does not carry the administrative role.
         </p>
         <div style="display: flex; gap: 0.85rem; justify-content: center; flex-wrap: wrap;">
@@ -555,27 +591,46 @@
         <!-- Admin Navigation Tabs -->
         <div class="admin-nav-tabs">
           <button type="button" class="admin-tab-btn active" data-tab="reservations">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
             <span>Reservations</span>
             <span class="tab-badge" id="tabBadgeRes">0</span>
           </button>
           <button type="button" class="admin-tab-btn" data-tab="guests">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
             <span>Guest Directory</span>
             <span class="tab-badge" id="tabBadgeGuests">0</span>
           </button>
           <button type="button" class="admin-tab-btn" data-tab="messages">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+              <polyline points="22,6 12,13 2,6"></polyline>
+            </svg>
             <span>Contact Inquiries</span>
             <span class="tab-badge" id="tabBadgeMessages">0</span>
           </button>
           <button type="button" class="admin-tab-btn" data-tab="subscribers">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+            </svg>
             <span>Newsletter Subscribers</span>
             <span class="tab-badge" id="tabBadgeSubs">0</span>
           </button>
           <button type="button" class="admin-tab-btn" data-tab="reviews">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon
+                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+              </polygon>
+            </svg>
             <span>Reviews</span>
             <span class="tab-badge" id="tabBadgeReviews">0</span>
           </button>
@@ -592,7 +647,8 @@
             </div>
 
             <div class="admin-toolbar">
-              <input type="text" id="resSearchInput" class="admin-search-input" placeholder="Search by name, email, or ref...">
+              <input type="text" id="resSearchInput" class="admin-search-input"
+                placeholder="Search by name, email, or ref...">
               <select id="resFilterStatus" class="admin-filter-select">
                 <option value="all">All Statuses</option>
                 <option value="Confirmed">Confirmed</option>
@@ -634,7 +690,8 @@
               </p>
             </div>
             <div class="admin-toolbar">
-              <input type="text" id="guestSearchInput" class="admin-search-input" placeholder="Search by name or email...">
+              <input type="text" id="guestSearchInput" class="admin-search-input"
+                placeholder="Search by name or email...">
             </div>
           </div>
 
@@ -761,14 +818,16 @@
             <span class="admin-title-badge">Maître D' Service</span>
             <h3 class="admin-modal-title">New Table Reservation</h3>
           </div>
-          <button type="button" class="admin-modal-close" id="btnCloseBookingModal" aria-label="Close modal">&times;</button>
+          <button type="button" class="admin-modal-close" id="btnCloseBookingModal"
+            aria-label="Close modal">&times;</button>
         </div>
 
         <form id="newBookingForm">
           <div class="admin-form-grid">
             <div class="admin-form-group">
               <label class="admin-form-label" for="nbGuestName">Guest Full Name *</label>
-              <input type="text" id="nbGuestName" class="admin-form-input" required placeholder="e.g. Lady Evelyn Vance">
+              <input type="text" id="nbGuestName" class="admin-form-input" required
+                placeholder="e.g. Lady Evelyn Vance">
             </div>
             <div class="admin-form-group">
               <label class="admin-form-label" for="nbGuestEmail">Email Address *</label>
@@ -834,10 +893,12 @@
 
           <div class="admin-form-group">
             <label class="admin-form-label" for="nbNotes">Maître D' Notes / Dietary Requirements</label>
-            <textarea id="nbNotes" class="admin-form-textarea" rows="2" placeholder="e.g. 25th Wedding Anniversary, Champagne upon arrival, Gluten-free for guest 2"></textarea>
+            <textarea id="nbNotes" class="admin-form-textarea" rows="2"
+              placeholder="e.g. 25th Wedding Anniversary, Champagne upon arrival, Gluten-free for guest 2"></textarea>
           </div>
 
-          <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-subtle);">
+          <div
+            style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-subtle);">
             <button type="button" class="btn btn-outline btn-sm" id="btnCancelBookingModal">Cancel</button>
             <button type="submit" class="btn btn-primary btn-sm" id="btnSubmitNewBooking">Confirm & Book Table</button>
           </div>
@@ -1299,9 +1360,9 @@
           const s = filterSelect.value;
 
           const filtered = allReservations.filter(r => {
-            const matchQuery = !q || 
-              (r.name || '').toLowerCase().includes(q) || 
-              (r.email || '').toLowerCase().includes(q) || 
+            const matchQuery = !q ||
+              (r.name || '').toLowerCase().includes(q) ||
+              (r.email || '').toLowerCase().includes(q) ||
               (r.id || '').toLowerCase().includes(q);
             const matchStatus = s === 'all' || (r.status || 'Confirmed').toLowerCase() === s.toLowerCase();
             return matchQuery && matchStatus;
@@ -1395,7 +1456,7 @@
 
               window.showToast(`Table confirmed for ${newRes.name}!`, 'success');
               closeBookingModal();
-              
+
               if (data) {
                 allReservations.unshift(data);
               } else {
@@ -1421,4 +1482,5 @@
     });
   </script>
 </body>
+
 </html>
