@@ -1159,6 +1159,153 @@
     }
   }
 
+  // ==========================================
+  // SUPABASE STORAGE PHOTO UPLOADS
+  // ==========================================
+
+  // 1. Core Upload Method to Supabase Storage 'photos' bucket
+  async function uploadPhoto(file, folder = 'uploads') {
+    if (!file) throw new Error('No image file provided for upload.');
+
+    // Validate mime type
+    const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/avif'];
+    if (!validTypes.includes(file.type)) {
+      throw new Error('Please upload an image file (JPG, PNG, WEBP, GIF, or AVIF).');
+    }
+
+    // Validate size (max 5MB)
+    const MAX_SIZE = 5 * 1024 * 1024;
+    if (file.size > MAX_SIZE) {
+      throw new Error('Image size must be less than 5MB.');
+    }
+
+    const supabase = await ensureClient();
+
+    // Unique filename
+    const ext = file.name.split('.').pop().toLowerCase() || 'jpg';
+    const cleanName = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}.${ext}`;
+    const cleanFolder = folder.replace(/^\/+|\/+$/g, '');
+    const filePath = `${cleanFolder}/${cleanName}`;
+
+    const { data, error } = await supabase.storage
+      .from('photos')
+      .upload(filePath, file, {
+        cacheControl: '3600',
+        upsert: true,
+        contentType: file.type
+      });
+
+    if (error) {
+      console.error('Supabase storage upload error:', error);
+      throw error;
+    }
+
+    // Get public URL
+    const { data: pubData } = supabase.storage
+      .from('photos')
+      .getPublicUrl(filePath);
+
+    return {
+      path: filePath,
+      publicUrl: pubData.publicUrl
+    };
+  }
+
+  // 2. Upload and Update User Profile Avatar Photo
+  async function updateUserAvatar(file, userId) {
+    if (!file) throw new Error('No image file selected.');
+    const supabase = await ensureClient();
+
+    const uploadResult = await uploadPhoto(file, 'avatars');
+    const avatarUrl = uploadResult.publicUrl;
+
+    if (userId) {
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .update({
+          avatar_url: avatarUrl,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', userId);
+
+      if (profileError) {
+        console.warn('Could not update avatar in profiles table:', profileError);
+      }
+    }
+
+    return avatarUrl;
+  }
+
+  // 3. Upload a Dining Memory Photo
+  async function uploadGuestPhoto(file, caption = '', userId = null) {
+    if (!file) throw new Error('No photo selected.');
+    const supabase = await ensureClient();
+
+    const folder = userId ? `gallery/guest-${userId}` : 'gallery';
+    const uploadResult = await uploadPhoto(file, folder);
+
+    if (userId) {
+      const { data, error } = await supabase
+        .from('guest_photos')
+        .insert([{
+          user_id: userId,
+          photo_url: uploadResult.publicUrl,
+          caption: caption.trim()
+        }])
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data;
+    }
+
+    return {
+      photo_url: uploadResult.publicUrl,
+      caption: caption.trim()
+    };
+  }
+
+  // 4. Fetch Guest Photos for User
+  async function fetchGuestPhotos(userId) {
+    const supabase = await ensureClient();
+    try {
+      let query = supabase.from('guest_photos').select('*').order('created_at', { ascending: false });
+      if (userId) {
+        query = query.eq('user_id', userId);
+      }
+      const { data, error } = await query;
+      if (error) throw error;
+      return data || [];
+    } catch (err) {
+      console.error('Fetch guest photos error:', err);
+      return [];
+    }
+  }
+
+  // 5. Delete a Guest Photo
+  async function deleteGuestPhoto(photoId, photoUrl) {
+    const supabase = await ensureClient();
+    try {
+      if (photoUrl && photoUrl.includes('/photos/')) {
+        const parts = photoUrl.split('/photos/');
+        if (parts[1]) {
+          await supabase.storage.from('photos').remove([decodeURIComponent(parts[1])]);
+        }
+      }
+
+      if (photoId) {
+        const { error } = await supabase
+          .from('guest_photos')
+          .delete()
+          .eq('id', photoId);
+        if (error) throw error;
+      }
+    } catch (err) {
+      console.error('Delete guest photo error:', err);
+      throw err;
+    }
+  }
+
   // Expose API
   window.AureliaAuth.openModal = openModal;
   window.AureliaAuth.closeModal = closeModal;
@@ -1172,6 +1319,11 @@
   window.AureliaAuth.sendPasswordReset = sendPasswordReset;
   window.AureliaAuth.signOut = signOut;
   window.AureliaAuth.fetchUserReservations = fetchUserReservations;
+  window.AureliaAuth.uploadPhoto = uploadPhoto;
+  window.AureliaAuth.updateUserAvatar = updateUserAvatar;
+  window.AureliaAuth.uploadGuestPhoto = uploadGuestPhoto;
+  window.AureliaAuth.fetchGuestPhotos = fetchGuestPhotos;
+  window.AureliaAuth.deleteGuestPhoto = deleteGuestPhoto;
 
   // Initialize on DOM ready
   if (document.readyState === 'loading') {
