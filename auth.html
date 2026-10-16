@@ -482,7 +482,7 @@
           pageGoogleBtn.disabled = true;
           pageGoogleBtn.querySelector('span').textContent = 'Connecting to Google...';
           try {
-            await window.AureliaAuth.signInWithGoogle();
+            await window.AureliaAuth.signInWithGoogle(redirectTo);
           } catch (err) {
             console.error('Google sign-in error:', err);
             showAlert(err.message || 'Google sign-in could not be initiated.');
@@ -654,12 +654,22 @@
 
         client.auth.getSession().then(({ data: { session } }) => {
           if (session && session.user) {
+            const redirectParam = urlParams.get('redirect');
+            if (redirectParam && !redirectParam.includes('auth.html')) {
+              window.location.href = redirectParam;
+              return;
+            }
             showSignedInCard(session.user);
           }
         });
 
         client.auth.onAuthStateChange((event, session) => {
           if (session && session.user) {
+            const redirectParam = urlParams.get('redirect');
+            if (redirectParam && !redirectParam.includes('auth.html') && (event === 'SIGNED_IN' || event === 'INITIAL_SESSION')) {
+              window.location.href = redirectParam;
+              return;
+            }
             showSignedInCard(session.user);
           } else {
             document.getElementById('pageAlreadySignedInCard').style.display = 'none';

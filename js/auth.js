@@ -175,9 +175,26 @@
   }
 
   // 5b. Google OAuth Sign In
-  async function signInWithGoogle() {
+  async function signInWithGoogle(customRedirect) {
     const supabase = await ensureClient();
-    const redirectTo = window.location.origin + window.location.pathname;
+    
+    // Determine the redirect destination
+    let redirectTo;
+    if (customRedirect) {
+      redirectTo = customRedirect.startsWith('http')
+        ? customRedirect
+        : window.location.origin + '/' + customRedirect.replace(/^\//, '');
+    } else {
+      const urlParams = new URLSearchParams(window.location.search);
+      const redirectParam = urlParams.get('redirect');
+      if (redirectParam) {
+        redirectTo = redirectParam.startsWith('http')
+          ? redirectParam
+          : window.location.origin + '/' + redirectParam.replace(/^\//, '');
+      } else {
+        redirectTo = window.location.origin + window.location.pathname;
+      }
+    }
 
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
